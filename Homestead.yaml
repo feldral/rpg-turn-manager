@@ -1,0 +1,16 @@
+ip: 192.168.10.10
+memory: 2048
+cpus: 1
+provider: virtualbox
+folders:
+    -
+        map: 'C:\Users\Feldral\personal-php-repos\rpg-turn-manager'
+        to: /home/vagrant/Code
+sites:
+    -
+        map: homestead.app
+        to: /home/vagrant/Code/public
+databases:
+    - homestead
+name: rpg-turn-manager
+hostname: rpg-turn-manager
