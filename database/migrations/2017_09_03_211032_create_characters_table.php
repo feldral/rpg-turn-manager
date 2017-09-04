@@ -15,7 +15,7 @@ class CreateCharactersTable extends Migration
     {
         Schema::create('characters', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('owner')->unsigned();
+            $table->integer('owner_id')->unsigned();
             $table->string('name', 80);
             $table->integer('strength')->default(1);
             $table->integer('dexterity')->default(1);
@@ -28,7 +28,7 @@ class CreateCharactersTable extends Migration
         });
 
         Schema::table('characters', function (Blueprint $table) {
-            $table->foreign('owner')->references('id')->on('users');
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 

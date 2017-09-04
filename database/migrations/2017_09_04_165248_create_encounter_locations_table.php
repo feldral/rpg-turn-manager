@@ -15,7 +15,16 @@ class CreateEncounterLocationsTable extends Migration
     {
         Schema::create('encounter_locations', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
+            $table->string('slug');
+            $table->string('description');
             $table->timestamps();
+        });
+
+        Schema::table('encounters', function (Blueprint $table) {
+            $table->integer('encounter_location_id')->unsigned();
+
+            $table->foreign('encounter_location_id')->references('id')->on('encounter_locations');
         });
     }
 
@@ -26,6 +35,11 @@ class CreateEncounterLocationsTable extends Migration
      */
     public function down()
     {
+        Schema::table('encounters', function (Blueprint $table) {
+            $table->dropForeign('encounters_encounter_location_id_foreign');
+            $table->dropColumn(['encounter_location_id']);
+        });
+
         Schema::dropIfExists('encounter_locations');
     }
 }

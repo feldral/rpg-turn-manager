@@ -15,8 +15,8 @@ class CreateEncountersTable extends Migration
     {
         Schema::create('encounters', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('host', false, true);
-            $table->integer('parent', false, true);
+            $table->integer('host_id', false, true);
+            $table->integer('parent_id', false, true);
             $table->string('name');
             $table->string('description');
             $table->timestamps();
@@ -24,8 +24,8 @@ class CreateEncountersTable extends Migration
         });
 
         Schema::table('encounters', function (Blueprint $table) {
-            $table->foreign('host')->references('id')->on('users');
-            $table->foreign('parent')->references('id')->on('encounters');
+            $table->foreign('host_id')->references('id')->on('users');
+            $table->foreign('parent_id')->references('id')->on('encounters');
         });
     }
 

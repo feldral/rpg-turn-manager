@@ -15,7 +15,7 @@ class CreateCharacterInstancesTable extends Migration
     {
         Schema::create('character_instances', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('original', false, true);
+            $table->integer('original_id', false, true);
             $table->string('name', 80);
             $table->integer('health');
             $table->integer('health_max');
@@ -33,7 +33,7 @@ class CreateCharacterInstancesTable extends Migration
         });
 
         Schema::table('character_instances', function (Blueprint $table) {
-            $table->foreign('original')->references('id')->on('characters');
+            $table->foreign('original_id')->references('id')->on('characters');
         });
     }
 

@@ -17,10 +17,10 @@ class CreateActionsTable extends Migration
             $table->increments('id');
             $table->integer('turn', false, true);
             $table->integer('order');
-            $table->integer('acting_character_instance', false, true);
+            $table->integer('acting_character_instance_id', false, true);
             $table->json('acting_character_location');
             $table->json('acting_character_new_location');
-            $table->integer('effected_character_instance', false, true);
+            $table->integer('effected_character_instance_id', false, true);
             $table->json('effected_character_location');
             $table->json('effected_character_new_location');
             $table->timestamps();
@@ -28,8 +28,8 @@ class CreateActionsTable extends Migration
 
         Schema::table('actions', function (Blueprint $table) {
             $table->foreign('turn')->references('id')->on('turns');
-            $table->foreign('acting_character_instance')->references('id')->on('character_instances');
-            $table->foreign('effected_character_instance')->references('id')->on('character_instances');
+            $table->foreign('acting_character_instance_id')->references('id')->on('character_instances');
+            $table->foreign('effected_character_instance_id')->references('id')->on('character_instances');
         });
     }
 

@@ -22,9 +22,9 @@ class CreateActionTypesTable extends Migration
         });
 
         Schema::table('actions', function (Blueprint $table) {
-            $table->integer('action_type', false, true);
+            $table->integer('action_type_id', false, true);
 
-            $table->foreign('action_type')->references('id')->on('action_types');
+            $table->foreign('action_type_id')->references('id')->on('action_types');
         });
     }
 
@@ -35,10 +35,11 @@ class CreateActionTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('action_types');
-
         Schema::table('actions', function (Blueprint $table) {
-            $table->dropColumn(['action_type']);
+            $table->dropForeign('actions_action_type_id_foreign');
+            $table->dropColumn(['action_type_id']);
         });
+
+        Schema::dropIfExists('action_types');
     }
 }

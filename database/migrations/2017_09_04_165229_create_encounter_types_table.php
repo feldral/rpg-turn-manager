@@ -22,9 +22,9 @@ class CreateEncounterTypesTable extends Migration
         });
 
         Schema::table('encounters', function (Blueprint $table) {
-            $table->integer('encounter_type', false, true);
+            $table->integer('encounter_type_id', false, true);
 
-            $table->foreign('encounter_type')->references('id')->on('encounter_types');
+            $table->foreign('encounter_type_id')->references('id')->on('encounter_types');
         });
     }
 
@@ -35,10 +35,11 @@ class CreateEncounterTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('encounter_types');
-
         Schema::table('encounters', function (Blueprint $table) {
-            $table->dropColumn(['encounter_type']);
+            $table->dropForeign('encounters_encounter_type_id_foreign');
+            $table->dropColumn(['encounter_type_id']);
         });
+
+        Schema::dropIfExists('encounter_types');
     }
 }
