@@ -54,7 +54,7 @@ class CharacterController extends Controller
      */
     public function show(string $id)
     {
-        $character = Character::whereId($id)->first();
+        $character = Character::whereId($id);
         //todo create view to see character
         return response()->json(['error'=>'incomplete endpoint', 'character'=>$character->toArray()], JsonResponse::HTTP_IM_USED);
     }
@@ -65,7 +65,7 @@ class CharacterController extends Controller
      */
     public function get(string $id)
     {
-        $character = Character::whereId($id)->first();
+        $character = Character::whereId($id);
 
         return response()->json($character->toArray());
     }
@@ -78,7 +78,7 @@ class CharacterController extends Controller
      */
     public function edit(string $id)
     {
-        $character = Character::whereId($id)->first();
+        $character = Character::whereId($id);
         //todo create a view to edit a character
         return response()->json(['error'=>'incomplete endpoint', 'character'=>$character->toArray()], JsonResponse::HTTP_IM_USED);
     }
@@ -92,7 +92,7 @@ class CharacterController extends Controller
      */
     public function update(UpdateCharacterRequest $request, string $id)
     {
-        $character = Character::whereId($id)->first();
+        $character = Character::whereId($id);
 
         $character->update($request->toArray());
 
@@ -109,7 +109,7 @@ class CharacterController extends Controller
      */
     public function destroy(string $id)
     {
-        $character = Character::whereId($id)->first();
+        $character = Character::whereId($id);
 
         $character->delete();
 
