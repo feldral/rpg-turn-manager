@@ -47,30 +47,32 @@ class CharacterController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Character  $character
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Character $character)
+    public function show(string $id)
     {
         //todo create view to see character
     }
 
     /**
-     * @param Character $character
+     * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function get(Character $character)
+    public function get(string $id)
     {
+        $character = Character::whereId($id);
+
         return response()->json($character->toArray());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Character  $character
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Character $character)
+    public function edit(string $id)
     {
         //todo create a view to edit a character
     }
@@ -79,11 +81,13 @@ class CharacterController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateCharacterRequest  $request
-     * @param  \App\Models\Character  $character
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCharacterRequest $request, Character $character)
+    public function update(UpdateCharacterRequest $request, string $id)
     {
+        $character = Character::whereId($id);
+
         $character->update($request->toArray());
 
         $character->save();
@@ -94,13 +98,15 @@ class CharacterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Character  $character
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Character $character)
+    public function destroy(string $id)
     {
+        $character = Character::whereId($id);
+
         $character->delete();
 
-        return response()->json(true);
+        return response()->json();
     }
 }
