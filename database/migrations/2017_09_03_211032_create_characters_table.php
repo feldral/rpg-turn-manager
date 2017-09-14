@@ -17,12 +17,14 @@ class CreateCharactersTable extends Migration
             $table->increments('id');
             $table->integer('owner_id')->unsigned();
             $table->string('name', 80);
-            $table->integer('strength')->default(1);
+            $table->integer('dominance')->default(1);
             $table->integer('dexterity')->default(1);
-            $table->integer('intelligence')->default(1);
+            $table->integer('comprehension')->default(1);
             $table->integer('creativity')->default(1);
-            $table->integer('endurance')->default(1);
-            $table->integer('willpower')->default(1);
+            $table->integer('influence')->default(1);
+            $table->integer('insight')->default(1);
+            $table->integer('fortitude')->default(1);
+            $table->integer('focus')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
