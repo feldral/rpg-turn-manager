@@ -27,6 +27,11 @@ class CreateEncountersTable extends Migration
             $table->foreign('host_id')->references('id')->on('users');
             $table->foreign('parent_id')->references('id')->on('encounters');
         });
+
+        Schema::table('character_instances', function (Blueprint $table) {
+            $table->integer('encounter_id', false, true);
+            $table->foreign('encounter_id')->references('id')->on('encounters');
+        });
     }
 
     /**
@@ -36,6 +41,11 @@ class CreateEncountersTable extends Migration
      */
     public function down()
     {
+        Schema::table('character_instances', function (Blueprint $table) {
+            $table->dropForeign('character_instances_encounter_id_foreign');
+            $table->dropColumn(['encounter_id']);
+        });
+
         Schema::dropIfExists('encounters');
     }
 }
