@@ -30,10 +30,6 @@ Route::delete('/characters/{id?}', 'CharacterController@destroy');
 Route::get('/characters', 'CharacterController@index');
 
 /*
- * todo Encounter Type Crud endpoints
- */
-
-/*
  * Encounter CRUD endpoints
  */
 Route::put('/encounters', 'EncounterController@store');
@@ -49,7 +45,7 @@ Route::get('/characters/{id?}/encounters');
 /*
  * Character Instance CRUD endpoints
  */
-Route::put('/characters/{characterId?}/encounters/{encounterId?}', 'CharacterInstanceController@store');
+Route::put('/characters/{characterId?}/encounters/{encounterId?}', 'CharacterInstanceController@create');
 Route::get('/characters/instances/{id?}', 'CharacterInstanceController@get');
 Route::delete('/characters/instance/{id?}', 'CharacterInstanceController@destroy');
 /*
