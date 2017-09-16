@@ -2,84 +2,84 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Character;
 use App\Models\CharacterInstance;
-use Illuminate\Http\Request;
+use App\Models\Encounter;
+use Illuminate\Http\JsonResponse;
 
+/**
+ * Class CharacterInstanceController
+ *
+ * @package App\Http\Controllers
+ */
 class CharacterInstanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Show the form for creating a new resource.
+     * Create a new Character Instance from a Character for an Encounter by Id
+     *
+     * @param int $characterId
+     * @param int $encounterId
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(int $characterId, int $encounterId)
     {
-        //
-    }
+        $character = Character::whereId($characterId);
+        $encounter = Encounter::whereId($encounterId);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $characterInstance = CharacterInstance::createFrom($character, $encounter);
+
+        return response()->json($characterInstance->toArray(), JsonResponse::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CharacterInstance  $characterInstance
+     * @param int $characterInstanceId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(CharacterInstance $characterInstance)
+    public function get(int $characterInstanceId)
     {
-        //
+        $characterInstance = CharacterInstance::whereId($characterInstanceId);
+
+        return response()->json($characterInstance->toArray());
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Move a Character Instance from one Encounter to a different Encounter
      *
-     * @param  \App\Models\CharacterInstance  $characterInstance
+     * @param int $characterInstanceId
+     * @param int $encounterId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(CharacterInstance $characterInstance)
+    public function move(int $characterInstanceId, int $encounterId)
     {
-        //
-    }
+        $characterInstance = CharacterInstance::whereId($characterInstanceId);
+        $encounter = Encounter::whereId($encounterId);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CharacterInstance  $characterInstance
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CharacterInstance $characterInstance)
-    {
-        //
+        $characterInstance->encounter_id = $encounter->id;
+
+        $characterInstance->save();
+
+        return response()->json($characterInstance->toArray());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CharacterInstance  $characterInstance
+     * @param  int  $characterInstanceId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CharacterInstance $characterInstance)
+    public function destroy(int $characterInstanceId)
     {
-        //
+        $characterInstance = CharacterInstance::whereId($characterInstanceId);
+
+        $characterInstance->delete();
+
+        return response()->json([], JsonResponse::HTTP_NO_CONTENT);
     }
 }

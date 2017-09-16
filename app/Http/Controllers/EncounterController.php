@@ -41,7 +41,6 @@ class EncounterController extends Controller
     public function store(CreateEncounterRequest $request)
     {
         $encounter = new Encounter($request->toArray());
-        //todo create view to see an encounter
         return response()->json($encounter->toArray(), JsonResponse::HTTP_CREATED);
     }
 
