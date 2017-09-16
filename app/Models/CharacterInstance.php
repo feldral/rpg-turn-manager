@@ -22,12 +22,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string|null $deleted_at
+ * @property int $encounter_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereComprehension($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereCreativity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereDexterity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereDominance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereEncounterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereFocus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereFortitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CharacterInstance whereId($value)
@@ -41,5 +43,32 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CharacterInstance extends Model
 {
-    //
+
+    /**
+     * @param \App\Models\Character $character
+     * @param \App\Models\Encounter $encounter
+     *
+     * @return \App\Models\CharacterInstance
+     */
+    public static function createFrom(Character $character, Encounter $encounter)
+    {
+        $characterInstance = new CharacterInstance();
+
+        $characterInstance->original_id = $character->id;
+        $characterInstance->encounter_id = $encounter->id;
+        $characterInstance->dominance = $character->dominance;
+        $characterInstance->dexterity = $character->dexterity;
+        $characterInstance->comprehension = $character->comprehension;
+        $characterInstance->creativity = $character->creativity;
+        $characterInstance->influence = $character->influence;
+        $characterInstance->insight = $character->insight;
+        $characterInstance->fortitude = $character->fortitude;
+        $characterInstance->focus = $character->focus;
+
+        $characterInstance->save();
+
+        //todo copy all of the character's talents
+
+        return $characterInstance;
+    }
 }
