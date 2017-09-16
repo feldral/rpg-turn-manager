@@ -7,6 +7,11 @@ use App\Http\Requests\UpdateCharacterRequest;
 use App\Models\Character;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Class CharacterController
+ *
+ * @package App\Http\Controllers
+ */
 class CharacterController extends Controller
 {
     /**
@@ -28,7 +33,7 @@ class CharacterController extends Controller
     public function create()
     {
         //todo show form for creating a character
-        return response()->json(['error'=>'incomplete endpoint'], JsonResponse::HTTP_IM_USED);
+        return response()->json(['error'=>'incomplete endpoint']);
     }
 
     /**
@@ -39,7 +44,15 @@ class CharacterController extends Controller
      */
     public function store(CreateCharacterRequest $request)
     {
+        $user = \Auth::user();
+
+        if (!$user){
+            //todo redirect
+        }
+
         $character = new Character($request->toArray());
+
+        $character->owner_id = $user->id;
 
         $character->save();
 
