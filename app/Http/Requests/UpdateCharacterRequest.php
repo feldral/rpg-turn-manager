@@ -4,6 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UpdateCharacterRequest
+ *
+ * @package App\Http\Requests
+ */
 class UpdateCharacterRequest extends FormRequest
 {
     /**
@@ -13,7 +18,7 @@ class UpdateCharacterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

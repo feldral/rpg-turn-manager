@@ -19,4 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/characters/create', 'CharacterController@create');
+/**
+ * Character Routes
+ */
+Route::get('/characters', 'CharacterController@create');
+Route::get('/characters/{id}', 'CharacterController@show');
+Route::get('/characters/{id}/edit', 'CharacterController@edit');
