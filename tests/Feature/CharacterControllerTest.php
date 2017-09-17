@@ -10,7 +10,7 @@ use Tests\TestCase;
 /**
  * Class CharacterControllerTests
  *
- * @package Tests\Unit
+ * @package Tests\Feature
  */
 class CharacterControllerTest extends TestCase
 {
