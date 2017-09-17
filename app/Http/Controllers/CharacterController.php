@@ -6,6 +6,7 @@ use App\Http\Requests\CreateCharacterRequest;
 use App\Http\Requests\UpdateCharacterRequest;
 use App\Models\Character;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Class CharacterController
@@ -22,8 +23,25 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        //todo character search endpoint
-        return response()->json(['error' => 'incomplete endpoint']);
+        $user = \Auth::user();
+
+        if ( ! $user) {
+            //todo redirect
+        }
+
+        $characters = Character::whereOwnerId($user->id)->get();
+
+        return response()->json($characters->toArray());
+    }
+
+    public function search()
+    {
+        $query = Input::get('q');
+        $sort = Input::get('sort');
+        $limit = Input::get('limit');
+        $page = Input::get('page');
+
+        $characters = Character::whereName($query);
     }
 
     /**

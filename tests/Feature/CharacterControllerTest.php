@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Character;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * Class CharacterControllerTests
@@ -15,18 +15,33 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CharacterControllerTest extends TestCase
 {
 
-    /** @test */
-    public function can_display_a_search_page_for_characters() { }
+    use DatabaseTransactions;
 
     /** @test */
+    public function can_display_characters_owned_by_authorized_user()
+    {
+        //Arrange
+        $user = factory(User::class)->create();
+        $characterOne = factory(Character::class)->create(['owner_id'=>$user->id]);
+        $characterTwo = factory(Character::class)->create(['owner_id'=>$user->id]);
+        //Act
+        $response = $this->actingAs($user)->get('/characters');
+        //Assert
+        var_dump($response->content());
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['name'=>$characterOne->name]);
+        $response->assertJsonFragment(['name'=>$characterTwo->name]);
+    }
+
     public function can_search_for_characters() { }
 
     /** @test */
     public function can_display_form_to_create_a_character()
     {
         //Arrange
+        $user = factory(User::class)->create();
         //Act
-        $response = $this->get('/characters');
+        $response = $this->actingAs($user)->get('/characters/create');
         //Assert
         $response->assertStatus(200);
         //todo check for html
@@ -76,7 +91,6 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->json('get', "/api/characters/{$character->id}");
         //Assert
-        var_dump($response->content());
         $response->assertStatus(200);
         $response->assertJsonFragment(['id' => $character->id, 'name' => 'Phill']);
     }
@@ -141,7 +155,8 @@ class CharacterControllerTest extends TestCase
         $user       = factory(User::class)->create();
         $character  = factory(Character::class)->create(['name' => 'Roger', 'owner_id' => $user->id]);
         //Act
-        $response = $this->actingAs($user_other)->json('post', "/api/characters/{$character->id}", ['name' => 'Robert']);
+        $response = $this->actingAs($user_other)
+            ->json('post', "/api/characters/{$character->id}", ['name' => 'Robert']);
         //Assert
         $response->assertStatus(401);
         $this->assertDatabaseHas('characters', ['name' => 'Roger', 'id' => $character->id]);

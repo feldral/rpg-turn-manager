@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 /**
  * Character Routes
  */
-Route::get('/characters', 'CharacterController@create');
+Route::get('/characters', 'CharacterController@index');
+Route::get('/characters/create', 'CharacterController@create');
 Route::get('/characters/{id}', 'CharacterController@show');
 Route::get('/characters/{id}/edit', 'CharacterController@edit');
