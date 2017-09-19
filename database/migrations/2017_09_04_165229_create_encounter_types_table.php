@@ -16,6 +16,7 @@ class CreateEncounterTypesTable extends Migration
         Schema::create('encounter_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->boolean('has_strict_turn_order')->default(false);
             $table->string('slug');
             $table->string('description');
             $table->timestamps();

@@ -15,8 +15,9 @@ class CreateEncountersTable extends Migration
     {
         Schema::create('encounters', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('host_id', false, true);
-            $table->integer('parent_id', false, true);
+            $table->integer('host_id', false, true)->nullable();
+            $table->integer('parent_id', false, true)->nullable();
+            $table->boolean('is_public')->default(false);
             $table->string('name');
             $table->string('description');
             $table->timestamps();
