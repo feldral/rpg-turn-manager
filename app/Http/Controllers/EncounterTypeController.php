@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EncounterType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class EncounterTypeController extends Controller
@@ -14,7 +15,29 @@ class EncounterTypeController extends Controller
      */
     public function index()
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
+
+        return response();
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $user = \Auth::user();
+
+        if(!$user){
+            //redirect
+        }
+
+        $encounterTypes = EncounterType::all();
+
+        return response()->json($encounterTypes->toArray());
     }
 
     /**
@@ -24,7 +47,11 @@ class EncounterTypeController extends Controller
      */
     public function create()
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
     }
 
     /**
@@ -35,7 +62,13 @@ class EncounterTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
+
+        $encounterType = EncounterType::whereId(1);
     }
 
     /**
@@ -46,7 +79,13 @@ class EncounterTypeController extends Controller
      */
     public function show(EncounterType $encounterType)
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
+
+        $encounterType = EncounterType::whereId(1);
     }
 
     /**
@@ -57,7 +96,13 @@ class EncounterTypeController extends Controller
      */
     public function edit(EncounterType $encounterType)
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
+
+        $encounterType = EncounterType::whereId(1);
     }
 
     /**
@@ -69,7 +114,13 @@ class EncounterTypeController extends Controller
      */
     public function update(Request $request, EncounterType $encounterType)
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
+
+        $encounterType = EncounterType::whereId(1);
     }
 
     /**
@@ -80,6 +131,12 @@ class EncounterTypeController extends Controller
      */
     public function destroy(EncounterType $encounterType)
     {
-        //
+        $user = \Auth::user();
+
+        if(!$user){
+            // redirect
+        }
+
+        $encounterType = EncounterType::whereId(1);
     }
 }
