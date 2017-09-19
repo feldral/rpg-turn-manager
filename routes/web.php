@@ -26,3 +26,11 @@ Route::get('/characters', 'CharacterController@index');
 Route::get('/characters/create', 'CharacterController@create');
 Route::get('/characters/{id}', 'CharacterController@show');
 Route::get('/characters/{id}/edit', 'CharacterController@edit');
+
+/*
+ * Encounter Type Routes
+ */
+Route::get('/encounters/types', 'EncounterTypeController@index');
+Route::get('/encounters/types/create', 'EncounterTypeController@create');
+Route::get('/encounters/types/{id}', 'EncounterTypeController@show');
+Route::get('/encounters/types/{id}/edit', 'EncounterTypeController@edit');

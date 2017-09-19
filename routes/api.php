@@ -25,10 +25,15 @@ Route::get('/characters', 'CharacterController@list');
 Route::get('/characters/{id}', 'CharacterController@get');
 Route::post('/characters/{id}', 'CharacterController@update');
 Route::delete('/characters/{id}', 'CharacterController@destroy');
+
 /*
- * Character interaction endpoints
+ * Encounter Type Crud endpoints
  */
-Route::get('/characters', 'CharacterController@index');
+Route::put('/encounters/types', 'EncounterTypeController@store');
+Route::get('/encounters/types', 'EncounterTypeController@list');
+Route::get('/encounters/types/{id}', 'EncounterTypeController@get');
+Route::post('/encounters/types/{id}', 'EncounterTypeController@update');
+Route::delete('/encounters/types/{id}', 'EncounterTypeController@destroy');
 
 /*
  * Encounter CRUD endpoints
