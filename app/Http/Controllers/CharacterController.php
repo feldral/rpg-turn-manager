@@ -34,12 +34,28 @@ class CharacterController extends Controller
         return response()->json($characters->toArray());
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $user = \Auth::user();
+
+        if ( ! $user) {
+            //todo redirect
+        }
+
+        $characters = Character::whereOwnerId($user->id)->get();
+
+        return response()->json($characters->toArray());
+    }
+
     public function search()
     {
         $query = Input::get('q');
-        $sort = Input::get('sort');
+        $sort  = Input::get('sort');
         $limit = Input::get('limit');
-        $page = Input::get('page');
+        $page  = Input::get('page');
 
         $characters = Character::whereName($query);
     }

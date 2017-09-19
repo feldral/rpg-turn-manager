@@ -18,19 +18,32 @@ class CharacterControllerTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function can_display_characters_owned_by_authorized_user()
+    public function can_display_a_list_of_characters_owned_by_authorized_user()
     {
         //Arrange
-        $user = factory(User::class)->create();
-        $characterOne = factory(Character::class)->create(['owner_id'=>$user->id]);
-        $characterTwo = factory(Character::class)->create(['owner_id'=>$user->id]);
+        $user         = factory(User::class)->create();
+        $characterOne = factory(Character::class)->create(['owner_id' => $user->id]);
+        $characterTwo = factory(Character::class)->create(['owner_id' => $user->id]);
         //Act
         $response = $this->actingAs($user)->get('/characters');
         //Assert
         var_dump($response->content());
         $response->assertStatus(200);
-        $response->assertJsonFragment(['name'=>$characterOne->name]);
-        $response->assertJsonFragment(['name'=>$characterTwo->name]);
+        $response->assertJsonFragment(['name' => $characterOne->name]);
+        $response->assertJsonFragment(['name' => $characterTwo->name]);
+    }
+
+    /** @test */
+    public function can_return_a_list_characters_owned_by_authorized_user()
+    {
+        //Arrange
+        $user         = factory(User::class)->create();
+        $characterOne = factory(Character::class)->create(['owner_id' => $user->id]);
+        $characterTwo = factory(Character::class)->create(['owner_id' => $user->id]);
+        //Act
+        $response = $this->actingAs($user)->json('get', 'api/characters');
+        //Assert
+        $response->assertStatus(200);
     }
 
     public function can_search_for_characters() { }

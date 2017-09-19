@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * Character CRUD endpoints
  */
 Route::put('/characters', 'CharacterController@store');
+Route::get('/characters', 'CharacterController@list');
 Route::get('/characters/{id}', 'CharacterController@get');
 Route::post('/characters/{id}', 'CharacterController@update');
 Route::delete('/characters/{id}', 'CharacterController@destroy');
