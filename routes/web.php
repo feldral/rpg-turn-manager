@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-/**
+/*
  * Character Routes
  */
 Route::get('/characters', 'CharacterController@index');

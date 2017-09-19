@@ -44,6 +44,8 @@ class CharacterControllerTest extends TestCase
         $response = $this->actingAs($user)->json('get', 'api/characters');
         //Assert
         $response->assertStatus(200);
+        $response->assertJsonFragment(['name' => $characterOne->name]);
+        $response->assertJsonFragment(['name' => $characterTwo->name]);
     }
 
     public function can_search_for_characters() { }
