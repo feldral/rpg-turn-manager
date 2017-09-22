@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateEncounterRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +14,7 @@ class CreateEncounterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,10 @@ class CreateEncounterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'parent_id'             => 'numeric',
+            'is_public'             => 'boolean',
+            'encounter_type_id'     => 'numeric|required',
+            'encounter_location_id' => 'numeric',
         ];
     }
 }

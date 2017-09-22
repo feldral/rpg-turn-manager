@@ -21,20 +21,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder whereComprehension($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereCreativity($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereDexterity($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereDominance($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereFocus($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereFortitude($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereInfluence($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereInsight($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereOwnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereComprehension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereCreativity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereDexterity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereDominance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereFocus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereFortitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereInfluence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereInsight($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Character whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Character extends Model

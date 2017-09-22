@@ -13,7 +13,7 @@ class UpdateEncounterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateEncounterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'parent_id'             => 'numeric',
+            'is_public'             => 'boolean',
+            'encounter_type_id'     => 'numeric',
+            'encounter_location_id' => 'numeric',
         ];
     }
 }

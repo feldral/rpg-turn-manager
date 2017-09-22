@@ -39,7 +39,7 @@ Route::delete('/encounters/types/{id}', 'EncounterTypeController@destroy');
  * Encounter CRUD endpoints
  */
 Route::put('/encounters', 'EncounterController@store');
-Route::get('/encounters', 'EncounterController@index');
+Route::get('/encounters', 'EncounterController@list');
 Route::get('/encounters/{id}', 'EncounterController@get');
 Route::post('/encounters/{id}', 'EncounterController@update');
 Route::delete('/encounters/{id}', 'EncounterController@destroy');

@@ -22,7 +22,7 @@ class CreateEncounterLocationsTable extends Migration
         });
 
         Schema::table('encounters', function (Blueprint $table) {
-            $table->integer('encounter_location_id')->unsigned();
+            $table->integer('encounter_location_id')->unsigned()->nullable();
 
             $table->foreign('encounter_location_id')->references('id')->on('encounter_locations');
         });
