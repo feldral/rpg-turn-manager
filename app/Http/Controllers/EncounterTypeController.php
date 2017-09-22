@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEncounterTypeRequest;
+use App\Http\Requests\UpdateEncounterTypeRequest;
 use App\Models\EncounterType;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
+/**
+ * Class EncounterTypeController
+ *
+ * @package App\Http\Controllers
+ */
 class EncounterTypeController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,11 +24,13 @@ class EncounterTypeController extends Controller
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
 
-        return response();
+        $encounterTypes = EncounterType::all();
+
+        return response()->json($encounterTypes->toArray());
     }
 
     /**
@@ -31,7 +40,7 @@ class EncounterTypeController extends Controller
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             //redirect
         }
 
@@ -49,7 +58,7 @@ class EncounterTypeController extends Controller
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
     }
@@ -57,86 +66,122 @@ class EncounterTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Requests\CreateEncounterTypeRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateEncounterTypeRequest $request)
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
 
-        $encounterType = EncounterType::whereId(1);
+        $encounterType = new EncounterType($request->toArray());
+
+        $encounterType->save();
+
+        return response()->json($encounterType->toArray(), JsonResponse::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EncounterType  $encounterType
+     * @param string $encounterTypeId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(EncounterType $encounterType)
+    public function show(string $encounterTypeId)
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
 
-        $encounterType = EncounterType::whereId(1);
+    }
+
+    /**
+     * @param string $encounterTypeId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get(string $encounterTypeId)
+    {
+        $user = \Auth::user();
+
+        if ( ! $user) {
+            // redirect
+        }
+
+        $encounterType = EncounterType::whereId($encounterTypeId)->first();
+
+        return response()->json($encounterType->toArray());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\EncounterType  $encounterType
+     * @param string $encounterTypeId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(EncounterType $encounterType)
+    public function edit(string $encounterTypeId)
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
 
-        $encounterType = EncounterType::whereId(1);
+        $encounterType = EncounterType::whereId($encounterTypeId)->first();
+
+        return response()->json($encounterType->toArray());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EncounterType  $encounterType
+     * @param string $encounterTypeId
+     * @param \App\Http\Requests\UpdateEncounterTypeRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EncounterType $encounterType)
+    public function update(string $encounterTypeId, UpdateEncounterTypeRequest $request)
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
 
-        $encounterType = EncounterType::whereId(1);
+        $encounterType = EncounterType::whereId($encounterTypeId)->first();
+
+        $encounterType->update($request->toArray());
+
+        return response()->json($encounterType);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EncounterType  $encounterType
+     * @param string $encounterTypeId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EncounterType $encounterType)
+    public function destroy(string $encounterTypeId)
     {
         $user = \Auth::user();
 
-        if(!$user){
+        if ( ! $user) {
             // redirect
         }
 
-        $encounterType = EncounterType::whereId(1);
+        $encounterType = EncounterType::whereId($encounterTypeId)->first();
+
+        $encounterType->delete();
+
+        response()->json();
     }
 }

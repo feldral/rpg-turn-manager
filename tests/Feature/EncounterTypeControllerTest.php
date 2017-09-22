@@ -33,19 +33,20 @@ class EncounterTypeControllerTest extends TestCase
     public function can_create_encounter_type()
     {
         //Arrange
-        $user          = factory(User::class)->create();
-        $encounterType = [
+        $user               = factory(User::class)->create();
+        $encounterTypeArray = [
             'slug'                  => 'boss-fight',
             'description'           => 'destroyer of worlds final showdown',
             'name'                  => 'World Ender: the Destroyer',
             'has_strict_turn_order' => true,
         ];
         //Act
-        $response = $this->actingAs($user)->json('put', '/api/encounters/types', $encounterType);
+        $response = $this->actingAs($user)->json('put', '/api/encounters/types', $encounterTypeArray);
         //Assert
+        var_dump($response->content());
+        $response->assertJsonFragment($encounterTypeArray);
+        $this->assertDatabaseHas('encounter_types', $encounterTypeArray);
         $response->assertStatus(201);
-        $response->assertJsonFragment($encounterType);
-        $this->assertDatabaseHas('encounter_types', $encounterType);
     }
 
     /** @test */
@@ -73,8 +74,8 @@ class EncounterTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('get', 'api/encounters/types');
         //Assert
         $response->assertStatus(200);
-        $response->assertJsonFragment($encounterTypeOne);
-        $response->assertJsonFragment($encounterTypeTwo);
+        $response->assertJsonFragment($encounterTypeOne->toArray());
+        $response->assertJsonFragment($encounterTypeTwo->toArray());
     }
 
     /** @test */

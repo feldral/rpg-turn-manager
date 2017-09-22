@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Encounter
  *
  * @property int $id
- * @property int $host_id
- * @property int $parent_id
+ * @property int|null $host_id
+ * @property int|null $parent_id
+ * @property int $is_public
  * @property string $name
  * @property string $description
  * @property \Carbon\Carbon|null $created_at
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereEncounterTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereHostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereIsPublic($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereUpdatedAt($value)
