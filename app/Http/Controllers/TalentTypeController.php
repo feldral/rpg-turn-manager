@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\TalentType;
+use App\Http\Requests\CreateTalentTypeRequest;
+use App\Models\TalentType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Class TalentTypeController
+ *
+ * @package App\Http\Controllers
+ */
 class TalentTypeController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -30,18 +38,24 @@ class TalentTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateTalentTypeRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateTalentTypeRequest $request)
     {
-        //
+        $talentType = new TalentType($request->toArray());
+
+        $talentType->save();
+
+        return response()->json($talentType->toArray(), JsonResponse::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\TalentType  $talentType
+     * @param  \App\Models\TalentType $talentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(TalentType $talentType)
@@ -52,7 +66,8 @@ class TalentTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\TalentType  $talentType
+     * @param  \App\Models\TalentType $talentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(TalentType $talentType)
@@ -63,8 +78,9 @@ class TalentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\TalentType  $talentType
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\TalentType $talentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, TalentType $talentType)
@@ -75,7 +91,8 @@ class TalentTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\TalentType  $talentType
+     * @param  \App\Models\TalentType $talentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(TalentType $talentType)

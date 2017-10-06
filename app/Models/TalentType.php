@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TalentType extends Model
 {
-    //
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+    ];
 }

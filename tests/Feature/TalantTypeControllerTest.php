@@ -42,9 +42,9 @@ class TalantTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('put', "api/talent_type", $request);
         //Assert
+        $response->assertStatus(201);
         $response->assertJsonFragment($request);
         $this->assertDatabaseHas('talent_types', $request);
-        $response->assertStatus(201);
     }
 
     /** @test */
@@ -64,7 +64,7 @@ class TalantTypeControllerTest extends TestCase
     public function can_return_a_talent_type()
     {
         //Arrange
-        $user = factory(User::class)->create();
+        $user       = factory(User::class)->create();
         $talentType = factory(TalentType::class)->create();
         //Act
         $response = $this->actingAs($user)->json('get', "api/talent_type/{$talentType->id}");
@@ -90,14 +90,14 @@ class TalantTypeControllerTest extends TestCase
     public function can_update_a_talent_type()
     {
         //Arrange
-        $user = factory(User::class)->create();
-        $talentType = factory(TalentType::class)->create(['name'=>'Push']);
-        $request = ['name'=>'Shove'];
+        $user       = factory(User::class)->create();
+        $talentType = factory(TalentType::class)->create(['name' => 'Push']);
+        $request    = ['name' => 'Shove'];
         //Act
         $response = $this->actingAs($user)->json('post', "api/talent_type/{$talentType}", $request);
         //Assert
         $response->assertJsonFragment($request);
-        $this->assertDatabaseHas('talent_types', ['id'=>$talentType->id, 'name'=>'Push']);
+        $this->assertDatabaseHas('talent_types', ['id' => $talentType->id, 'name' => 'Push']);
         $response->assertStatus(200);
     }
 
@@ -105,12 +105,12 @@ class TalantTypeControllerTest extends TestCase
     public function can_delete_a_talent_type()
     {
         //Arrange
-        $user = factory(User::class)->create();
+        $user       = factory(User::class)->create();
         $talentType = factory(TalentType::class)->create();
         //Act
         $response = $this->actingAs($user)->json('delete', "api/talent_type/{$talentType->id}");
         //Assert
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('talent_types', ['id'=>$talentType->id]);
+        $this->assertDatabaseMissing('talent_types', ['id' => $talentType->id]);
     }
 }

@@ -60,5 +60,6 @@ Route::delete('/characters/instance/{id}', 'CharacterInstanceController@destroy'
 Route::get('/characters/{id}/instances', 'CharacterInstanceController@list');
 
 /*
- * todo Turn endpoints
+ * Talent Type endpoints
  */
+Route::put('/talent_type', 'TalentTypeController@store');
