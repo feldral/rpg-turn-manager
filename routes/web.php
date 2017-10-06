@@ -42,3 +42,9 @@ Route::get('/encounters', 'EncounterController@index');
 Route::get('/encounters/create', 'EncounterController@create');
 Route::get('/encounters/{id}','EncounterController@show');
 Route::get('/encounters/{id}/edit','EncounterController@edit');
+
+/*
+ * Talent Type Routes
+ */
+Route::get('/talent_type/create', 'EncounterController@create');
+Route::
