@@ -6,7 +6,6 @@ use App\Http\Requests\CreateEncounterRequest;
 use App\Http\Requests\UpdateEncounterRequest;
 use App\Models\Encounter;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class EncounterController

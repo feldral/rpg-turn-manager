@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTalentTypeRequest;
 use App\Models\TalentType;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class TalentTypeController
@@ -64,6 +63,20 @@ class TalentTypeController extends Controller
     }
 
     /**
+     * Return the specified resource
+     *
+     * @param string $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get(string $id)
+    {
+        $talentType = TalentType::whereId($id)->first();
+
+        return response()->json($talentType->toArray());
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\TalentType $talentType
@@ -78,12 +91,12 @@ class TalentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  UpdateTalentTypeRequest $request
      * @param  \App\Models\TalentType $talentType
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TalentType $talentType)
+    public function update(UpdateTalentTypeRequest $request, TalentType $talentType)
     {
         //
     }

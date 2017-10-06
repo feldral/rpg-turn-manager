@@ -63,3 +63,4 @@ Route::get('/characters/{id}/instances', 'CharacterInstanceController@list');
  * Talent Type endpoints
  */
 Route::put('/talent_type', 'TalentTypeController@store');
+Route::get('/talent_type/{id}', 'TalentTypeController@get');

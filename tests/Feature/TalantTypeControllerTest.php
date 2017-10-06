@@ -42,9 +42,9 @@ class TalantTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('put', "api/talent_type", $request);
         //Assert
-        $response->assertStatus(201);
         $response->assertJsonFragment($request);
         $this->assertDatabaseHas('talent_types', $request);
+        $response->assertStatus(201);
     }
 
     /** @test */
