@@ -94,11 +94,11 @@ class TalantTypeControllerTest extends TestCase
         $talentType = factory(TalentType::class)->create(['name' => 'Push']);
         $request    = ['name' => 'Shove'];
         //Act
-        $response = $this->actingAs($user)->json('post', "api/talent_type/{$talentType}", $request);
+        $response = $this->actingAs($user)->json('post', "api/talent_type/{$talentType->id}", $request);
         //Assert
         $response->assertJsonFragment($request);
-        $this->assertDatabaseHas('talent_types', ['id' => $talentType->id, 'name' => 'Push']);
         $response->assertStatus(200);
+        $this->assertDatabaseHas('talent_types', ['id' => $talentType->id, 'name' => 'Shove']);
     }
 
     /** @test */

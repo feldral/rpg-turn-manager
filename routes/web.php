@@ -48,3 +48,4 @@ Route::get('/encounters/{id}/edit','EncounterController@edit');
  */
 Route::get('/talent_type/create', 'TalentTypeController@create');
 Route::get('/talent_type/{id}', 'TalentTypeController@show');
+Route::get('/talent_type/{id}/edit', 'TalentTypeController@edit');

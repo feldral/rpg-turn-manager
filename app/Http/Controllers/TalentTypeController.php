@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTalentTypeRequest;
+use App\Http\Requests\UpdateTalentTypeRequest;
 use App\Models\TalentType;
 use Illuminate\Http\JsonResponse;
 
@@ -92,13 +93,19 @@ class TalentTypeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateTalentTypeRequest $request
-     * @param  \App\Models\TalentType $talentType
+     * @param  string $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTalentTypeRequest $request, TalentType $talentType)
+    public function update(UpdateTalentTypeRequest $request, string $id)
     {
-        //
+        $talentType = TalentType::whereId($id)->first();
+
+        $talentType->update($request->toArray());
+
+        $talentType->save();
+
+        return response()->json($talentType->toArray());
     }
 
     /**

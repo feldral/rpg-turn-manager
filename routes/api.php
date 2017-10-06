@@ -64,3 +64,4 @@ Route::get('/characters/{id}/instances', 'CharacterInstanceController@list');
  */
 Route::put('/talent_type', 'TalentTypeController@store');
 Route::get('/talent_type/{id}', 'TalentTypeController@get');
+Route::post('/talent_type/{id}', 'TalentTypeController@update');
