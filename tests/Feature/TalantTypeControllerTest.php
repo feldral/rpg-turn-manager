@@ -43,6 +43,7 @@ class TalantTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('put', "api/talent_type", $request);
         //Assert
         $response->assertJsonFragment($request);
+        $this->assertDatabaseHas('talent_types', $request);
         $response->assertStatus(201);
     }
 
@@ -96,6 +97,7 @@ class TalantTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('post', "api/talent_type/{$talentType}", $request);
         //Assert
         $response->assertJsonFragment($request);
+        $this->assertDatabaseHas('talent_types', ['id'=>$talentType->id, 'name'=>'Push']);
         $response->assertStatus(200);
     }
 
@@ -109,5 +111,6 @@ class TalantTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('delete', "api/talent_type/{$talentType->id}");
         //Assert
         $response->assertStatus(200);
+        $this->assertDatabaseMissing('talent_types', ['id'=>$talentType->id]);
     }
 }
