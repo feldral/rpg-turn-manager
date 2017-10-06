@@ -111,12 +111,16 @@ class TalentTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TalentType $talentType
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TalentType $talentType)
+    public function destroy(string $id)
     {
-        //
+        $talentType = TalentType::whereId($id)->first();
+
+        $talentType->delete();
+
+        return response()->json(true);
     }
 }
