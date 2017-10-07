@@ -27,7 +27,6 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get('/characters');
         //Assert
-        var_dump($response->content());
         $response->assertStatus(200);
         $response->assertJsonFragment(['name' => $characterOne->name]);
         $response->assertJsonFragment(['name' => $characterTwo->name]);

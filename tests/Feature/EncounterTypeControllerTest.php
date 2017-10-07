@@ -43,7 +43,6 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('put', '/api/encounters/types', $encounterTypeArray);
         //Assert
-        var_dump($response->content());
         $response->assertJsonFragment($encounterTypeArray);
         $this->assertDatabaseHas('encounter_types', $encounterTypeArray);
         $response->assertStatus(201);
