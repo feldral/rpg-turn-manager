@@ -12,7 +12,7 @@ use Tests\TestCase;
  *
  * @package Tests\Feature
  */
-class TalantTypeControllerTest extends TestCase
+class TalentTypeControllerTest extends TestCase
 {
 
     use DatabaseTransactions;
@@ -23,7 +23,7 @@ class TalantTypeControllerTest extends TestCase
         //Arrange
         $user = factory(User::class)->create();
         //Act
-        $response = $this->actingAs($user)->get('/talent_type/create');
+        $response = $this->actingAs($user)->get('/talents/types/create');
         //Assert
         $response->assertStatus(200);
         //todo check for html
@@ -40,7 +40,7 @@ class TalantTypeControllerTest extends TestCase
             'description' => 'A large fiery construct that is hurled at a target',
         ];
         //Act
-        $response = $this->actingAs($user)->json('put', "api/talent_type", $request);
+        $response = $this->actingAs($user)->json('put', "api/talents/types", $request);
         //Assert
         $response->assertJsonFragment($request);
         $this->assertDatabaseHas('talent_types', $request);
@@ -54,7 +54,7 @@ class TalantTypeControllerTest extends TestCase
         $user       = factory(User::class)->create();
         $talentType = factory(TalentType::class)->create();
         //Act
-        $response = $this->actingAs($user)->get("/talent_type/{$talentType->id}");
+        $response = $this->actingAs($user)->get("/talents/types/{$talentType->id}");
         //Assert
         $response->assertStatus(200);
         //todo check for html
@@ -67,7 +67,7 @@ class TalantTypeControllerTest extends TestCase
         $user       = factory(User::class)->create();
         $talentType = factory(TalentType::class)->create();
         //Act
-        $response = $this->actingAs($user)->json('get', "api/talent_type/{$talentType->id}");
+        $response = $this->actingAs($user)->json('get', "api/talents/types/{$talentType->id}");
         //Assert
         $response->assertJsonFragment($talentType->toArray());
         $response->assertStatus(200);
@@ -80,7 +80,7 @@ class TalantTypeControllerTest extends TestCase
         $user       = factory(User::class)->create();
         $talentType = factory(TalentType::class)->create();
         //Act
-        $response = $this->actingAs($user)->get("/talent_type/{$talentType->id}/edit");
+        $response = $this->actingAs($user)->get("/talents/types/{$talentType->id}/edit");
         //Assert
         $response->assertStatus(200);
         //todo check for html
@@ -94,7 +94,7 @@ class TalantTypeControllerTest extends TestCase
         $talentType = factory(TalentType::class)->create(['name' => 'Push']);
         $request    = ['name' => 'Shove'];
         //Act
-        $response = $this->actingAs($user)->json('post', "api/talent_type/{$talentType->id}", $request);
+        $response = $this->actingAs($user)->json('post', "api/talents/types/{$talentType->id}", $request);
         //Assert
         $response->assertJsonFragment($request);
         $response->assertStatus(200);
@@ -108,7 +108,7 @@ class TalantTypeControllerTest extends TestCase
         $user       = factory(User::class)->create();
         $talentType = factory(TalentType::class)->create();
         //Act
-        $response = $this->actingAs($user)->json('delete', "api/talent_type/{$talentType->id}");
+        $response = $this->actingAs($user)->json('delete', "api/talents/types/{$talentType->id}");
         //Assert
         $response->assertStatus(200);
         $this->assertDatabaseMissing('talent_types', ['id' => $talentType->id]);

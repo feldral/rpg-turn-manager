@@ -62,7 +62,7 @@ Route::get('/characters/{id}/instances', 'CharacterInstanceController@list');
 /*
  * Talent Type endpoints
  */
-Route::put('/talent_type', 'TalentTypeController@store');
-Route::get('/talent_type/{id}', 'TalentTypeController@get');
-Route::post('/talent_type/{id}', 'TalentTypeController@update');
-Route::delete('/talent_type/{id}', 'TalentTypeController@destroy');
+Route::put('/talents/types', 'TalentTypeController@store');
+Route::get('/talents/types/{id}', 'TalentTypeController@get');
+Route::post('/talents/types/{id}', 'TalentTypeController@update');
+Route::delete('/talents/types/{id}', 'TalentTypeController@destroy');
