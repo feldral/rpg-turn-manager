@@ -15,7 +15,13 @@ class CreateTalentsTable extends Migration
     {
         Schema::create('talents', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('talent_type_id', false, true);
+            $table->integer('level', false, true);
+            $table->integer('progression', false, true);
+            $table->date('last_level_up');
             $table->timestamps();
+
+            $table->foreign('talent_type_id')->references('id')->on('talent_types');
         });
     }
 
