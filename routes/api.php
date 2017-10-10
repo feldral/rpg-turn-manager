@@ -66,3 +66,11 @@ Route::put('/talents/types', 'TalentTypeController@store');
 Route::get('/talents/types/{id}', 'TalentTypeController@get');
 Route::post('/talents/types/{id}', 'TalentTypeController@update');
 Route::delete('/talents/types/{id}', 'TalentTypeController@destroy');
+
+/*
+ * Talent endpoints
+ */
+Route::put('/talents', 'TalentController@store');
+Route::get('/talents/{id}', 'TalentController@get');
+Route::post('/talents/{id}', 'TalentController@update');
+Route::delete('/talents/{id}', 'TalentController@destroy');

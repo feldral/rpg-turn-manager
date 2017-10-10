@@ -40,8 +40,8 @@ Route::get('/encounters/types/{id}/edit', 'EncounterTypeController@edit');
  */
 Route::get('/encounters', 'EncounterController@index');
 Route::get('/encounters/create', 'EncounterController@create');
-Route::get('/encounters/{id}','EncounterController@show');
-Route::get('/encounters/{id}/edit','EncounterController@edit');
+Route::get('/encounters/{id}', 'EncounterController@show');
+Route::get('/encounters/{id}/edit', 'EncounterController@edit');
 
 /*
  * Talent Type Routes
@@ -49,3 +49,10 @@ Route::get('/encounters/{id}/edit','EncounterController@edit');
 Route::get('/talents/types/create', 'TalentTypeController@create');
 Route::get('/talents/types/{id}', 'TalentTypeController@show');
 Route::get('/talents/types/{id}/edit', 'TalentTypeController@edit');
+
+/*
+ * Talent Routes
+ */
+Route::get('/talents/create', 'TalentController@create');
+Route::get('/talents/{id}', 'TalentController@show');
+Route::get('/talents/{id}/edit', 'TalentController@edit');
