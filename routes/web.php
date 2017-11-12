@@ -36,6 +36,13 @@ Route::get('/encounters/types/{id}', 'EncounterTypeController@show');
 Route::get('/encounters/types/{id}/edit', 'EncounterTypeController@edit');
 
 /*
+ * Encounter Definition CRUD endpoints
+ */
+Route::get('/encounters/types/{id}/definitions', 'EncounterDefinitionController@index');
+Route::get('/encounters/types/{id}/definitions', 'EncounterDefinitionController@create');
+Route::get('/encounters/types/definitions/{id}', 'EncounterDefinitionController@edit');
+
+/*
  * Encounter Routes
  */
 Route::get('/encounters', 'EncounterController@index');
