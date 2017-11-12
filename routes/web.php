@@ -49,10 +49,3 @@ Route::get('/encounters/{id}/edit', 'EncounterController@edit');
 Route::get('/talents/types/create', 'TalentTypeController@create');
 Route::get('/talents/types/{id}', 'TalentTypeController@show');
 Route::get('/talents/types/{id}/edit', 'TalentTypeController@edit');
-
-/*
- * Talent Routes
- */
-Route::get('/talents/create', 'TalentController@create');
-Route::get('/talents/{id}', 'TalentController@show');
-Route::get('/talents/{id}/edit', 'TalentController@edit');
