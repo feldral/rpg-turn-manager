@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $insight
  * @property int $fortitude
  * @property int $focus
+ * @property Collection|TalentInstance[] $talents
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -43,6 +45,28 @@ use Illuminate\Database\Eloquent\Model;
 class CharacterInstance extends Model
 {
 
+    protected $fillable = [
+        'original_id',
+        'encounter_id',
+        'original_id',
+        'encounter_id',
+        'dominance',
+        'dexterity',
+        'comprehension',
+        'creativity',
+        'influence',
+        'insight',
+        'fortitude',
+        'focus',
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function talents(){
+        return $this->hasMany(TalentInstance::class);
+    }
+
     /**
      * @param \App\Models\Character $character
      * @param \App\Models\Encounter $encounter
@@ -66,7 +90,17 @@ class CharacterInstance extends Model
 
         $characterInstance->save();
 
-        //todo copy all of the character's talents
+        $character->load('talents');
+        $character->talents->each(function (Talent $talent) use ($characterInstance) {
+            $talentInstance = new TalentInstance([
+                'talent_type_id'        => $talent->talent_type_id,
+                'character_instance_id' => $characterInstance->id,
+                'level'                 => $talent->level,
+                'use_count'             => 0,
+            ]);
+
+            $talentInstance->save();
+        });
 
         return $characterInstance;
     }

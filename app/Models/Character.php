@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $insight
  * @property int $fortitude
  * @property int $focus
+ * @property Collection|Talent[] $talents
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -44,4 +46,11 @@ class Character extends Model
         'owner_id',
         'name',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function talents() {
+        return $this->hasMany(Talent::class);
+    }
 }
