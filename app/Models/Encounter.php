@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $deleted_at
  * @property int $encounter_type_id
  * @property int|null $encounter_location_id
+ * @property EncounterType $type
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Encounter whereEncounterLocationId($value)
@@ -37,4 +38,11 @@ class Encounter extends Model
         'encounter_type_id',
         'encounter_location_id',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type(){
+        return $this->belongsTo(EncounterType::class);
+    }
 }

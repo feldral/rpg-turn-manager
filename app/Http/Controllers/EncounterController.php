@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateEncounterRequest;
 use App\Http\Requests\UpdateEncounterRequest;
+use App\Models\Character;
+use App\Models\CharacterInstance;
 use App\Models\Encounter;
+use App\Models\EncounterDefinition;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -29,8 +32,10 @@ class EncounterController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function list() {
+    public function list()
+    {
         $encounters = Encounter::all();
+
         return response()->json($encounters->toArray());
     }
 
@@ -57,6 +62,13 @@ class EncounterController extends Controller
         $encounter = new Encounter($request->toArray());
 
         $encounter->save();
+
+        $encounterDefinitions = EncounterDefinition::whereEncounterTypeId($encounter->encounter_type_id)->get();
+
+        $encounterDefinitions->each(function ($encounterDefinition) use ($encounter) {
+            $character = Character::whereId($encounterDefinition->character_id)->first();
+            CharacterInstance::createFrom($character, $encounter);
+        });
 
         return response()->json($encounter->toArray(), JsonResponse::HTTP_CREATED);
     }

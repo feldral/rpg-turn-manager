@@ -25,8 +25,8 @@ class CharacterInstanceController extends Controller
      */
     public function create(int $characterId, int $encounterId)
     {
-        $character = Character::whereId($characterId);
-        $encounter = Encounter::whereId($encounterId);
+        $character = Character::whereId($characterId)->first();
+        $encounter = Encounter::whereId($encounterId)->first();
 
         $characterInstance = CharacterInstance::createFrom($character, $encounter);
 

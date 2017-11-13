@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $original_id
- * @property string $name
  * @property int $turn_order
  * @property int $dominance
  * @property int $dexterity
@@ -54,16 +53,16 @@ class CharacterInstance extends Model
     {
         $characterInstance = new CharacterInstance();
 
-        $characterInstance->original_id = $character->id;
-        $characterInstance->encounter_id = $encounter->id;
-        $characterInstance->dominance = $character->dominance;
-        $characterInstance->dexterity = $character->dexterity;
+        $characterInstance->original_id   = $character->id;
+        $characterInstance->encounter_id  = $encounter->id;
+        $characterInstance->dominance     = $character->dominance;
+        $characterInstance->dexterity     = $character->dexterity;
         $characterInstance->comprehension = $character->comprehension;
-        $characterInstance->creativity = $character->creativity;
-        $characterInstance->influence = $character->influence;
-        $characterInstance->insight = $character->insight;
-        $characterInstance->fortitude = $character->fortitude;
-        $characterInstance->focus = $character->focus;
+        $characterInstance->creativity    = $character->creativity;
+        $characterInstance->influence     = $character->influence;
+        $characterInstance->insight       = $character->insight;
+        $characterInstance->fortitude     = $character->fortitude;
+        $characterInstance->focus         = $character->focus;
 
         $characterInstance->save();
 

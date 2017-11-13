@@ -162,8 +162,14 @@ class EncounterControllerTest extends TestCase
         $response = $this->actingAs($user)->json('put', '/api/encounters', $encounterArray);
         //Assert
         $this->assertDatabaseHas('encounters', ['id' => $response->json()['id']]);
-        $this->assertDatabaseHas('character_instances', ['id' => $encounterDefinitionOne->character_id]);
-        $this->assertDatabaseHas('character_instances', ['id' => $encounterDefinitionTwo->character_id]);
-        $response->assertStatus(201);
+        $this->assertDatabaseHas('character_instances', [
+            'original_id'  => $encounterDefinitionOne->character_id,
+            'encounter_id' => $response->json()['id'],
+        ]);
+        $this->assertDatabaseHas('character_instances', [
+            'original_id'  => $encounterDefinitionTwo->character_id,
+            'encounter_id' => $response->json()['id'],
+        ]);
+        $response->assertStatus(JsonResponse::HTTP_CREATED);
     }
 }
