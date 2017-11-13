@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateEncounterDefinitionRequest;
 use App\Http\Requests\UpdateEncounterDefinitionRequest;
 use App\Models\EncounterDefinition;
+use Illuminate\Http\JsonResponse;
 
 class EncounterDefinitionController extends Controller
 {
@@ -35,7 +36,7 @@ class EncounterDefinitionController extends Controller
 
         $encounterDefinition->save();
 
-        return response()->json($encounterDefinition->toArray(), 201);
+        return response()->json($encounterDefinition->toArray(), JsonResponse::HTTP_CREATED);
     }
 
     /**

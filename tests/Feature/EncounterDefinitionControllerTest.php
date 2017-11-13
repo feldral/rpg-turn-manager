@@ -7,6 +7,7 @@ use App\Models\EncounterDefinition;
 use App\Models\EncounterType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 class EncounterDefinitionControllerTest extends TestCase
@@ -23,7 +24,7 @@ class EncounterDefinitionControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/encounters/types/{$encounter->id}/definitions");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -47,7 +48,7 @@ class EncounterDefinitionControllerTest extends TestCase
         ];
         $response->assertJsonFragment($expectedResponse);
         $this->assertDatabaseHas('encounter_definitions', $expectedResponse);
-        $response->assertStatus(201);
+        $response->assertStatus(JsonResponse::HTTP_CREATED);
     }
 
     /** @test */
@@ -59,7 +60,7 @@ class EncounterDefinitionControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/api/encounters/types/definitions/{$encounterDefinition->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
     }
 
     /** @test */
@@ -71,7 +72,7 @@ class EncounterDefinitionControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/encounters/types/definitions/{$encounterDefinition->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -93,7 +94,7 @@ class EncounterDefinitionControllerTest extends TestCase
             'id'           => $encounterDefinition->id,
             'character_id' => $character->id,
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
     }
 
     /** @test */
@@ -109,6 +110,6 @@ class EncounterDefinitionControllerTest extends TestCase
         $this->assertDatabaseMissing('encounter_definitions', [
             'id' => $encounterDefinition->id,
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
     }
 }

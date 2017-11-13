@@ -6,6 +6,7 @@ use App\Models\EncounterDefinition;
 use App\Models\EncounterType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 /**
@@ -26,7 +27,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get('/encounters/types/create');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -46,7 +47,7 @@ class EncounterTypeControllerTest extends TestCase
         //Assert
         $response->assertJsonFragment($encounterTypeArray);
         $this->assertDatabaseHas('encounter_types', $encounterTypeArray);
-        $response->assertStatus(201);
+        $response->assertStatus(JsonResponse::HTTP_CREATED);
     }
 
     /** @test */
@@ -59,7 +60,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get('/encounters/types');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -73,7 +74,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('get', 'api/encounters/types');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment($encounterTypeOne->toArray());
         $response->assertJsonFragment($encounterTypeTwo->toArray());
     }
@@ -87,7 +88,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/encounters/types/{$encounterType->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -100,7 +101,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('get', "/api/encounters/types/{$encounterType->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment(['name' => $encounterType->name]);
     }
 
@@ -115,7 +116,7 @@ class EncounterTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('get', "/api/encounters/types/{$encounterType->id}");
         //Assert
         $response->assertJsonFragment(['encounter_definitions'=>[$encounterDefinitionOne->toArray(),$encounterDefinitionTwo->toArray()]]);
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
     }
 
     /** @test */
@@ -127,7 +128,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/encounters/types/{$encounterType->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -147,7 +148,7 @@ class EncounterTypeControllerTest extends TestCase
             'name' => $newEncounterTypeName,
         ]);
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment($updatedObjectFragment);
         $this->assertDatabaseHas('encounter_types', $updatedObjectFragment);
     }
@@ -161,7 +162,7 @@ class EncounterTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('delete', "/api/encounters/types/{$encounterType->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $this->assertDatabaseMissing('encounter_types', [
             'id' => $encounterType->id,
         ]);

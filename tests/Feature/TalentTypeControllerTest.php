@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\TalentType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 /**
@@ -25,7 +26,7 @@ class TalentTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get('/talents/types/create');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -44,7 +45,7 @@ class TalentTypeControllerTest extends TestCase
         //Assert
         $response->assertJsonFragment($request);
         $this->assertDatabaseHas('talent_types', $request);
-        $response->assertStatus(201);
+        $response->assertStatus(JsonResponse::HTTP_CREATED);
     }
 
     /** @test */
@@ -56,7 +57,7 @@ class TalentTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/talents/types/{$talentType->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -70,7 +71,7 @@ class TalentTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('get', "api/talents/types/{$talentType->id}");
         //Assert
         $response->assertJsonFragment($talentType->toArray());
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
     }
 
     /** @test */
@@ -82,7 +83,7 @@ class TalentTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/talents/types/{$talentType->id}/edit");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -97,7 +98,7 @@ class TalentTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->json('post', "api/talents/types/{$talentType->id}", $request);
         //Assert
         $response->assertJsonFragment($request);
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $this->assertDatabaseHas('talent_types', ['id' => $talentType->id, 'name' => 'Shove']);
     }
 
@@ -110,7 +111,7 @@ class TalentTypeControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('delete', "api/talents/types/{$talentType->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $this->assertDatabaseMissing('talent_types', ['id' => $talentType->id]);
     }
 }

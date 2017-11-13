@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Character;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 /**
@@ -27,7 +28,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get('/characters');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment(['name' => $characterOne->name]);
         $response->assertJsonFragment(['name' => $characterTwo->name]);
     }
@@ -42,7 +43,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('get', 'api/characters');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment(['name' => $characterOne->name]);
         $response->assertJsonFragment(['name' => $characterTwo->name]);
     }
@@ -57,7 +58,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get('/characters/create');
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -69,7 +70,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('put', '/api/characters', ['name' => 'Bob']);
         //Assert
-        $response->assertStatus(201);
+        $response->assertStatus(JsonResponse::HTTP_CREATED);
         $response->assertJsonFragment(['name' => 'Bob']);
         $this->assertDatabaseHas('characters', ['id' => $response->json()['id'], 'name' => 'Bob']);
     }
@@ -93,7 +94,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->get("/characters/{$character->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -105,7 +106,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->json('get', "/api/characters/{$character->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment(['id' => $character->id, 'name' => 'Phill']);
     }
 
@@ -118,7 +119,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->get("/characters/{$character->id}/edit");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         //todo check for html
     }
 
@@ -145,7 +146,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('post', "/api/characters/{$character->id}", ['name' => 'Robert']);
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertJsonFragment(['name' => 'Robert']);
         $this->assertDatabaseHas('characters', ['id' => $character->id, 'name' => 'Robert']);
     }
@@ -185,7 +186,7 @@ class CharacterControllerTest extends TestCase
         //Act
         $response = $this->actingAs($user)->json('delete', "/api/characters/{$character->id}");
         //Assert
-        $response->assertStatus(200);
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $this->assertDatabaseMissing('characters', ['id' => $character->id]);
     }
 
