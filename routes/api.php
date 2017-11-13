@@ -38,11 +38,10 @@ Route::delete('/encounters/types/{id}', 'EncounterTypeController@destroy');
 /*
  * Encounter Definition CRUD endpoints
  */
-Route::put('/encounters/types/{id}/definitions', 'EncounterTypeController@store');
-Route::get('/encounters/types/{id}/definitions', 'EncounterTypeController@list');
-Route::get('/encounters/types/definitions/{id}', 'EncounterTypeController@get');
-Route::post('/encounters/types/definitions/{id}', 'EncounterTypeController@update');
-Route::delete('/encounters/types/definitions/{id}', 'EncounterTypeController@destroy');
+Route::put('/encounters/types/{id}/definitions', 'EncounterDefinitionController@store');
+Route::get('/encounters/types/definitions/{id}', 'EncounterDefinitionController@get');
+Route::post('/encounters/types/definitions/{id}', 'EncounterDefinitionController@update');
+Route::delete('/encounters/types/definitions/{id}', 'EncounterDefinitionController@destroy');
 
 /*
  * Encounter CRUD endpoints

@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEncounterDefinitionRequest;
+use App\Http\Requests\UpdateEncounterDefinitionRequest;
 use App\Models\EncounterDefinition;
-use Illuminate\Http\Request;
 
 class EncounterDefinitionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -30,32 +22,44 @@ class EncounterDefinitionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $id
+     * @param \App\Http\Requests\CreateEncounterDefinitionRequest|\Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id, CreateEncounterDefinitionRequest $request)
     {
-        //
+        $encounterDefinition = new EncounterDefinition($request->toArray());
+
+        $encounterDefinition->encounter_type_id = (int) $id;
+
+        $encounterDefinition->save();
+
+        return response()->json($encounterDefinition->toArray(), 201);
     }
 
     /**
-     * Display the specified resource.
+     * Return the specified resource.
      *
-     * @param  \App\Models\EncounterDefinition  $encounterDefinition
+     * @param $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(EncounterDefinition $encounterDefinition)
+    public function get($id)
     {
-        //
+        $encounterDefinition = EncounterDefinition::whereId($id)->first();
+
+        return response()->json($encounterDefinition->toArray());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\EncounterDefinition  $encounterDefinition
+     * @param $encounterDefinitionId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(EncounterDefinition $encounterDefinition)
+    public function edit($encounterDefinitionId)
     {
         //
     }
@@ -63,23 +67,35 @@ class EncounterDefinitionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EncounterDefinition  $encounterDefinition
+     * @param \App\Http\Requests\UpdateEncounterDefinitionRequest|\Illuminate\Http\Request $request
+     * @param $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EncounterDefinition $encounterDefinition)
+    public function update(UpdateEncounterDefinitionRequest $request, $id)
     {
-        //
+        $encounterDefinition = EncounterDefinition::whereId($id)->first();
+
+        $encounterDefinition->update($request->toArray());
+
+        $encounterDefinition->save();
+
+        return response()->json($encounterDefinition->toArray());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EncounterDefinition  $encounterDefinition
+     * @param $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EncounterDefinition $encounterDefinition)
+    public function destroy($id)
     {
-        //
+        $encounterDefinition = EncounterDefinition::whereId($id)->first();
+
+        $encounterDefinition->delete();
+
+        return response()->json(true);
     }
 }

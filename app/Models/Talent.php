@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $talent_type_id
+ * @property int $character_id
  * @property int $level
  * @property int $progression
  * @property string $last_level_up
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Talent whereCharacterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Talent whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Talent whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Talent whereLastLevelUp($value)
