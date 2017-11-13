@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateEncounterTypeRequest;
 use App\Http\Requests\UpdateEncounterTypeRequest;
+use App\Models\EncounterDefinition;
 use App\Models\EncounterType;
 use Illuminate\Http\JsonResponse;
 
@@ -82,7 +83,7 @@ class EncounterTypeController extends Controller
 
         $encounterType->save();
 
-        return response()->json($encounterType->toArray(), JsonResponse::HTTP_CREATED);
+        return response()->json($encounterType->toResponseArray(), JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -117,7 +118,7 @@ class EncounterTypeController extends Controller
 
         $encounterType = EncounterType::whereId($encounterTypeId)->first();
 
-        return response()->json($encounterType->toArray());
+        return response()->json($encounterType->toResponseArray());
     }
 
     /**
@@ -137,7 +138,7 @@ class EncounterTypeController extends Controller
 
         $encounterType = EncounterType::whereId($encounterTypeId)->first();
 
-        return response()->json($encounterType->toArray());
+        return response()->json($encounterType->toResponseArray());
     }
 
     /**
@@ -160,7 +161,7 @@ class EncounterTypeController extends Controller
 
         $encounterType->update($request->toArray());
 
-        return response()->json($encounterType);
+        return response()->json($encounterType->toResponseArray());
     }
 
     /**
@@ -182,6 +183,6 @@ class EncounterTypeController extends Controller
 
         $encounterType->delete();
 
-        response()->json();
+        return response()->json(true);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\EncounterDefinition;
 use App\Models\EncounterType;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -101,6 +102,20 @@ class EncounterTypeControllerTest extends TestCase
         //Assert
         $response->assertStatus(200);
         $response->assertJsonFragment(['name' => $encounterType->name]);
+    }
+
+    /** @test */
+    public function returned_encounter_type_shows_all_encounter_definitions(){
+        //Arrange
+        $user = factory(User::class)->create();
+        $encounterType = factory(EncounterType::class)->create();
+        $encounterDefinitionOne = factory(EncounterDefinition::class)->create(['encounter_type_id'=>$encounterType->id]);
+        $encounterDefinitionTwo = factory(EncounterDefinition::class)->create(['encounter_type_id'=>$encounterType->id]);
+        //Act
+        $response = $this->actingAs($user)->json('get', "/api/encounters/types/{$encounterType->id}");
+        //Assert
+        $response->assertJsonFragment(['encounter_definitions'=>[$encounterDefinitionOne->toArray(),$encounterDefinitionTwo->toArray()]]);
+        $response->assertStatus(200);
     }
 
     /** @test */

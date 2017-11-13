@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $has_strict_turn_order
  * @property string $slug
  * @property string $description
+ * @property Collection|EncounterDefinition[] $encounter_definitions
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EncounterType whereCreatedAt($value)
@@ -32,4 +34,24 @@ class EncounterType extends Model
         'description',
         'has_strict_turn_order',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function encounter_definitions()
+    {
+        return $this->hasMany(EncounterDefinition::class);
+    }
+
+    /**
+     * Model and all related models for json responses
+     *
+     * @return array
+     */
+    public function toResponseArray()
+    {
+        return array_merge($this->toArray(), [
+                'encounter_definitions' => $this->encounter_definitions->toArray(),
+            ]);
+    }
 }
