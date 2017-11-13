@@ -16,8 +16,7 @@ class CreateCharacterInstancesTable extends Migration
         Schema::create('character_instances', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('original_id', false, true);
-            $table->string('name', 80);
-            $table->integer('turn_order');
+            $table->integer('turn_order')->nullable();
             $table->integer('dominance')->default(1);
             $table->integer('dexterity')->default(1);
             $table->integer('comprehension')->default(1);
