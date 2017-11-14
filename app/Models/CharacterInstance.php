@@ -63,7 +63,8 @@ class CharacterInstance extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function talents(){
+    public function talents()
+    {
         return $this->hasMany(TalentInstance::class);
     }
 
