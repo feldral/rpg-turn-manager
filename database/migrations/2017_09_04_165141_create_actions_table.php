@@ -18,11 +18,7 @@ class CreateActionsTable extends Migration
             $table->integer('turn', false, true);
             $table->integer('order');
             $table->integer('acting_character_instance_id', false, true);
-            $table->json('acting_character_location');
-            $table->json('acting_character_new_location');
             $table->integer('effected_character_instance_id', false, true);
-            $table->json('effected_character_location');
-            $table->json('effected_character_new_location');
             $table->timestamps();
         });
 

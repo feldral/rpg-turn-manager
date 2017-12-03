@@ -16,6 +16,7 @@ class CreateCharactersTable extends Migration
         Schema::create('characters', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('owner_id')->unsigned();
+            $table->boolean('is_npc')->default(false);
             $table->string('name', 80);
             $table->integer('dominance')->default(1);
             $table->integer('dexterity')->default(1);
