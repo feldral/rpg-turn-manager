@@ -39,7 +39,7 @@ const ITEMS             = [
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.2,
         'hit_talent' => 'one_hand',
-        'ctit_stat'  => 'dexterity',
+        'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.5,
     ],
     'short_sword' => [
@@ -49,7 +49,7 @@ const ITEMS             = [
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.5,
         'hit_talent' => 'one_hand',
-        'ctit_stat'  => 'dexterity',
+        'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.2,
     ],
     'long_sword'  => [
@@ -59,7 +59,7 @@ const ITEMS             = [
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.5,
         'hit_talent' => 'two_hand',
-        'ctit_stat'  => 'dexterity',
+        'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.2,
     ],
     'mace'        => [
@@ -69,7 +69,7 @@ const ITEMS             = [
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.4,
         'hit_talent' => 'one_hand',
-        'ctit_stat'  => 'dexterity',
+        'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.3,
     ],
     'fire_ball'   => [
@@ -79,7 +79,7 @@ const ITEMS             = [
         'dmg_stat'   => 'comprehension',
         'dmg_mod'    => 0.5,
         'hit_talent' => 'projectile_magic',
-        'ctit_stat'  => 'creativity',
+        'crit_stat'  => 'creativity',
         'crit_mod'   => 0.2,
     ],
     'frost_bolt'  => [
@@ -89,7 +89,7 @@ const ITEMS             = [
         'dmg_stat'   => 'comprehension',
         'dmg_mod'    => 0.2,
         'hit_talent' => 'projectile_magic',
-        'ctit_stat'  => 'creativity',
+        'crit_stat'  => 'creativity',
         'crit_mod'   => 0.5,
     ],
     'bribe'       => [
@@ -99,7 +99,7 @@ const ITEMS             = [
         'dmg_stat'   => 'influence',
         'dmg_mod'    => 0.5,
         'hit_talent' => false,
-        'ctit_stat'  => 'intuition',
+        'crit_stat'  => 'intuition',
         'crit_mod'   => 0.2,
     ],
     'intimidate'  => [
@@ -109,7 +109,7 @@ const ITEMS             = [
         'dmg_stat'   => 'influence',
         'dmg_mod'    => 0.2,
         'hit_talent' => false,
-        'ctit_stat'  => 'intuition',
+        'crit_stat'  => 'intuition',
         'crit_mod'   => 0.5,
     ],
 ]
@@ -423,10 +423,10 @@ const ITEMS             = [
             } else {
                 $hitTalent = 0;
             }
-            $critStat = "$slug.{$item['dmg_stat']}";
+            $critStat = "$slug.{$item['crit_stat']}";
             $critMod  = "$slug.items.$itemName.critMod";
             ?>
-            <div class="row itemCard" title="Possible Damage increased with: <?= statNameToLabel($item['dmg_stat']) ?>; Average Damage increased with: <?= statNameToLabel($item['dmg_talent']) ?>; Hit Bonus increased with: <?= statNameToLabel($item['hit_talent']) ?>;">
+            <div class="row itemCard" title="Possible Damage increased with: <?= statNameToLabel($item['dmg_stat']) ?>; Average Damage increased with: <?= statNameToLabel($item['dmg_talent']) ?>; Hit Bonus increased with: <?= statNameToLabel($item['hit_talent']) ?>; Critical hit Chance increased with: <?= statNameToLabel($item['crit_stat']) ?>">
                 <div class="col-xs-12"><?= statNameToLabel($itemName) ?></div>
                 <label class="col-xs-8" for="<?= "$id.damage" ?>">Min - Max</label>
                 <span class="col-xs-4" id="<?= "$id.damage" ?>"><span ng-bind="methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>)"></span> - <span ng-bind="methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>)"></span></span>
@@ -434,6 +434,8 @@ const ITEMS             = [
                 <span class="col-xs-4" id="<?= "$id.averageDamage" ?>" ng-bind="methods.damageAverage(methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>), methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>), <?= "$dmgTalent" ?>)"></span>
                 <label class="col-xs-8" for="<?= "$id.hit.bonus" ?>">Hit Bonus</label>
                 <span class="col-xs-4" id="<?= "$id.hit.bonus" ?>"><span ng-bind="methods.hitBonus(<?= "$hitTalent" ?>)"></span></span>
+                <label class="col-xs-8" for="<?= "$id.crit.chance" ?>">Crit Chance</label>
+                <span class="col-xs-4" id="<?= "$id.crit.chance" ?>"><span ng-bind="methods.criticalChance(<?= "0, $critStat, $critMod" ?>)"></span></span>
             </div>
             <?php
         }
