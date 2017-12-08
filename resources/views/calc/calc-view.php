@@ -144,6 +144,14 @@ const ITEMS             = [
 
         <!-- Styles -->
         <style>
+            .itemCard {
+                border : 3px solid slategrey;
+            }
+
+            .itemCard:hover {
+                border-color     : darkslategrey;
+                background-color : lightslategrey;
+            }
         </style>
     </head>
     <body ng-app="statCalc" ng-controller="myCtrl">
@@ -246,6 +254,44 @@ const ITEMS             = [
                 return char.comprehension + char.intuition;
             };
 
+            $scope.classes = [];
+            $scope.classes.makeTank = function (char) {
+                char.dexterity = 8;
+                char.dominance = 10;
+                char.creativity = 3;
+                char.comprehension = 4;
+                char.intuition = 5;
+                char.influence = 5;
+                char.focus = 5;
+                char.fortitude = 10;
+
+                //todo talents
+            };
+            $scope.classes.makeMage = function (char) {
+                char.dexterity = 4;
+                char.dominance = 3;
+                char.creativity = 7;
+                char.comprehension = 10;
+                char.intuition = 5;
+                char.influence = 5;
+                char.focus = 10;
+                char.fortitude = 6;
+
+                //todo talents
+            };
+            $scope.classes.makeRouge = function (char) {
+                char.dexterity = 10;
+                char.dominance = 5;
+                char.creativity = 5;
+                char.comprehension = 5;
+                char.intuition = 5;
+                char.influence = 5;
+                char.focus = 10;
+                char.fortitude = 5;
+
+                //todo talents
+            };
+
             $scope.maxValue = function (char) {
                 return Math.max($scope.speed(char.dominance, char.dexterity), $scope.health(char.dominance, char.fortitude), $scope.will(char.focus, char.influence), $scope.energy(char.focus, char.fortitude), $scope.energyRegen(char.dexterity, char.creativity), $scope.initiative(char.dexterity, char.creativity, char.intuition), $scope.physical_resistance(char.dexterity, char.intuition), $scope.mental_resistance(char.comprehension, char.intuition));
             };
@@ -263,12 +309,21 @@ const ITEMS             = [
      *
      * @param $name
      * @param $slug
+     *
+     * @return string
      */
     function characterPanel($name, $slug)
     {
         ?>
         <div class="row">
             <div class="col-xs-12"><?= $name ?></div>
+            <div class="col-xs-12">
+                <div class="row classes">
+                    <span class="col-xs-4 col-md-3" ng-click="classes.makeTank(<?= $slug ?>)">Tank</span>
+                    <span class="col-xs-4 col-md-3" ng-click="classes.makeMage(<?= $slug ?>)">Mage</span>
+                    <span class="col-xs-4 col-md-3" ng-click="classes.makeRouge(<?= $slug ?>)">Rouge</span>
+                </div>
+            </div>
             <div class="col-xs-12 col-md-6">
                 <?php
                 foreach (TIER_1_STAT_NAMES as $statName) {
@@ -313,6 +368,8 @@ const ITEMS             = [
      * angular to set scope values for character
      *
      * @param $slug
+     *
+     * @return string
      */
     function characterStats($slug)
     {
@@ -349,6 +406,8 @@ const ITEMS             = [
      * ui for item use stats
      *
      * @param $slug
+     *
+     * @return string
      */
     function items($slug)
     {
@@ -359,14 +418,20 @@ const ITEMS             = [
             $dmgStat   = "$slug.{$item['dmg_stat']}";
             $dmgMod    = "$slug.items.$itemName.dmgMod";
             $dmgTalent = "$slug.{$item['dmg_talent']}";
-            $hitTalent = "$slug.{$item['hit_talent']}";
-            $critStat  = "$slug.{$item['dmg_stat']}";
-            $critMod   = "$slug.items.$itemName.critMod";
+            if ($item['hit_talent']) {
+                $hitTalent = "$slug.{$item['hit_talent']}";
+            } else {
+                $hitTalent = 0;
+            }
+            $critStat = "$slug.{$item['dmg_stat']}";
+            $critMod  = "$slug.items.$itemName.critMod";
             ?>
-            <div class="row">
+            <div class="row itemCard" title="Possible Damage increased with: <?= statNameToLabel($item['dmg_stat']) ?>; Average Damage increased with: <?= statNameToLabel($item['dmg_talent']) ?>; Hit Bonus increased with: <?= statNameToLabel($item['hit_talent']) ?>;">
                 <div class="col-xs-12"><?= statNameToLabel($itemName) ?></div>
                 <label class="col-xs-8" for="<?= "$id.damage" ?>">Min - Max</label>
                 <span class="col-xs-4" id="<?= "$id.damage" ?>"><span ng-bind="methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>)"></span> - <span ng-bind="methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>)"></span></span>
+                <label class="col-xs-8" for="<?= "$id.averageDamage" ?>">Average Damage</label>
+                <span class="col-xs-4" id="<?= "$id.averageDamage" ?>" ng-bind="methods.damageAverage(methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>), methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>), <?= "$dmgTalent" ?>)"></span>
                 <label class="col-xs-8" for="<?= "$id.hit.bonus" ?>">Hit Bonus</label>
                 <span class="col-xs-4" id="<?= "$id.hit.bonus" ?>"><span ng-bind="methods.hitBonus(<?= "$hitTalent" ?>)"></span></span>
             </div>
