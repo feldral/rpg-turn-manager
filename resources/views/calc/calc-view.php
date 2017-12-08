@@ -121,7 +121,7 @@ const ITEMS             = [
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Stat Calculator V2.1</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -174,40 +174,6 @@ const ITEMS             = [
             <?= characterStats('charOne') ?>
             <?= characterStats('charTwo') ?>
 
-            //skills
-            $scope.items = [];
-
-            $scope.items.dagger = [];
-            $scope.items.dagger.min = 1;
-            $scope.items.dagger.max = 6;
-            $scope.items.dagger.dmgMod = 0.5;
-            $scope.items.dagger.critMod = 0.5;
-
-            $scope.items.dagger = [];
-            $scope.items.dagger.min = 1;
-            $scope.items.dagger.max = 6;
-            $scope.items.dagger.dmgMod = 0.5;
-            $scope.items.dagger.critMod = 0.5;
-
-            $scope.items.dagger = [];
-            $scope.items.dagger.min = 1;
-            $scope.items.dagger.max = 6;
-            $scope.items.dagger.dmgMod = 0.5;
-            $scope.items.dagger.critMod = 0.5;
-
-            $scope.items.dagger = [];
-            $scope.items.dagger.min = 1;
-            $scope.items.dagger.max = 6;
-            $scope.items.dagger.dmgMod = 0.5;
-            $scope.items.dagger.critMod = 0.5;
-
-            $scope.items.dagger = [];
-            $scope.items.dagger.min = 1;
-            $scope.items.dagger.max = 6;
-            $scope.items.dagger.dmgMod = 0.5;
-            $scope.items.dagger.critMod = 0.5;
-
-
             //skill data calculation
             $scope.methods = [];
             $scope.methods.hitBonus = function (level) {
@@ -229,6 +195,7 @@ const ITEMS             = [
                 return Math.round((mod * stat) + base);
             };
 
+            //secondary stat calculation
             $scope.speed = function (char) {
                 return char.dominance + char.dexterity - Math.abs(char.dexterity - char.dominance);
             };
@@ -254,6 +221,7 @@ const ITEMS             = [
                 return char.comprehension + char.intuition;
             };
 
+            // preformed classes
             $scope.classes = [];
             $scope.classes.makeTank = function (char) {
                 char.dexterity = 8;
@@ -292,12 +260,23 @@ const ITEMS             = [
                 //todo talents
             };
 
+            //for chart
             $scope.maxValue = function (char) {
-                return Math.max($scope.speed(char.dominance, char.dexterity), $scope.health(char.dominance, char.fortitude), $scope.will(char.focus, char.influence), $scope.energy(char.focus, char.fortitude), $scope.energyRegen(char.dexterity, char.creativity), $scope.initiative(char.dexterity, char.creativity, char.intuition), $scope.physical_resistance(char.dexterity, char.intuition), $scope.mental_resistance(char.comprehension, char.intuition));
+                return Math.max(
+                    $scope.speed(char.dominance, char.dexterity),
+                    $scope.health(char.dominance, char.fortitude),
+                    $scope.will(char.focus, char.influence),
+                    $scope.energy(char.focus, char.fortitude),
+                    $scope.energy_regen(char.dexterity, char.creativity),
+                    $scope.initiative(char.dexterity, char.creativity, char.intuition),
+                    $scope.physical_resistance(char.dexterity, char.intuition),
+                    $scope.mental_resistance(char.comprehension, char.intuition)
+                );
             };
 
             //        $scope.chartURL = '';
 
+            //utility
             $scope.Math = window.Math;
         });
     </script>
