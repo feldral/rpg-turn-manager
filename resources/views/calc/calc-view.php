@@ -196,7 +196,7 @@ const ITEMS             = [
             };
 
             $scope.methods.calculateIntercept = function (slope, x, y) {
-                return -(slope*x - y);
+                return -(slope * x - y);
             };
             $scope.methods.calculateWeight = function (slope, intercept, step) {
                 return Math.round(slope * step + intercept);
@@ -213,24 +213,28 @@ const ITEMS             = [
                 console.log(averageBonus);
 
                 if (averageBonus == 0) {
+                    console.log('negative slope');
                     let slope = -1;
-                    let intercept = $scope.methods.calculateIntercept(slope, 0, 1);
-                    for (let i = 0; i > diff; i++){
+                    let intercept = $scope.methods.calculateIntercept(slope, diff, 1);
+                    console.log(intercept);
+                    for (let i = 0; i <= diff; i++) {
                         let weight = $scope.methods.calculateWeight(slope, intercept, i);
                         table.push({
-                            "weight" : weight,
-                            "damage" : min + i
+                            "weight": weight,
+                            "damage": min + i
                         })
                     }
                 }
                 else if (averageBonus == diff) {
+                    console.log('positive slope');
                     let slope = 1;
-                    let intercept = $scope.methods.calculateIntercept(slope, diff, 1);
-                    for (let i = 0; i > diff; i++){
+                    let intercept = $scope.methods.calculateIntercept(slope, diff, diff + 1);
+                    console.log(intercept);
+                    for (let i = 0; i <= diff; i++) {
                         let weight = $scope.methods.calculateWeight(slope, intercept, i);
                         table.push({
-                            "weight" : weight,
-                            "damage" : min + i
+                            "weight": weight,
+                            "damage": min + i
                         })
                     }
                 }
@@ -243,7 +247,9 @@ const ITEMS             = [
             };
 
             $scope.methods.roll = function (item) {
-                let table = $scope.methods.generateTable(item.min, item.max, item.average)
+                let table = $scope.methods.generateTable(item.calcMin(), item.calcMax(), item.calcAverage());
+
+
             };
 
             //secondary stat calculation
@@ -422,12 +428,35 @@ const ITEMS             = [
 
         <?php
         foreach (ITEMS as $itemName => $item) {
+            $id         = "\$scope.$slug.items.$itemName";
+            $dmgMod     = "\$scope.$slug.items.$itemName.dmgMod";
+            $minDmg     = "\$scope.$slug.items.$itemName.min";
+            $maxDmg     = "\$scope.$slug.items.$itemName.max";
+            $calcMinDmg = "\$scope.$slug.items.$itemName.calcMin";
+            $calcMaxDmg = "\$scope.$slug.items.$itemName.calcMax";
+            $dmgStat    = "\$scope.$slug.{$item['dmg_stat']}";
+            $dmgTalent  = "\$scope.$slug.{$item['dmg_talent']}";
+            $critStat   = "\$scope.$slug.{$item['crit_stat']}";
+            $critMod    = "\$scope.$slug.items.$itemName.critMod";
+
+            if ($item['hit_talent']) {
+                $hitTalent = "\$scope.$slug.{$item['hit_talent']}";
+            } else {
+                $hitTalent = 0;
+            }
+
             ?>
             $scope.<?= $slug ?>.items.<?= $itemName ?> = [];
             $scope.<?= $slug ?>.items.<?= $itemName ?>.min = <?= $item['min'] ?>;
             $scope.<?= $slug ?>.items.<?= $itemName ?>.max = <?= $item['max'] ?>;
+            $scope.<?= $slug ?>.items.<?= $itemName ?>.calcMin = function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); };
+            $scope.<?= $slug ?>.items.<?= $itemName ?>.calcMax = function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); };
+            $scope.<?= $slug ?>.items.<?= $itemName ?>.calcAverage = function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); };
             $scope.<?= $slug ?>.items.<?= $itemName ?>.dmgMod = <?= $item['dmg_mod'] ?>;
             $scope.<?= $slug ?>.items.<?= $itemName ?>.critMod = <?= $item['crit_mod'] ?>;
+            $scope.<?= $slug ?>.items.<?= $itemName ?>.calcCritBonus = function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); };
+            $scope.<?= $slug ?>.items.<?= $itemName ?>.calcHitBonus = function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); };
+            $scope.<?= $slug ?>.items.<?= $itemName ?>.dmgRoll = '*';
             <?php
         }
     }
@@ -442,30 +471,29 @@ const ITEMS             = [
     function items($slug)
     {
         foreach (ITEMS as $itemName => $item) {
-            $id        = "$slug.items.$itemName";
-            $minDmg    = "$slug.items.$itemName.min";
-            $maxDmg    = "$slug.items.$itemName.max";
-            $dmgStat   = "$slug.{$item['dmg_stat']}";
-            $dmgMod    = "$slug.items.$itemName.dmgMod";
-            $dmgTalent = "$slug.{$item['dmg_talent']}";
-            if ($item['hit_talent']) {
-                $hitTalent = "$slug.{$item['hit_talent']}";
-            } else {
-                $hitTalent = 0;
-            }
-            $critStat = "$slug.{$item['crit_stat']}";
-            $critMod  = "$slug.items.$itemName.critMod";
+            $id                = "$slug.items.$itemName";
+            $calcMinDmg        = "$slug.items.$itemName.calcMin";
+            $calcMaxDmg        = "$slug.items.$itemName.calcMax";
+            $calcAverageDamage = "$slug.items.$itemName.calcAverage";
+            $calcCritBonus     = "$slug.items.$itemName.calcCritBonus";
+            $calcHitBonus      = "$slug.items.$itemName.calcHitBonus";
+            $damageRoll        = "$slug.items.$itemName.dmgRoll";
             ?>
             <div class="row itemCard" title="Possible Damage increased with: <?= statNameToLabel($item['dmg_stat']) ?>; Average Damage increased with: <?= statNameToLabel($item['dmg_talent']) ?>; Hit Bonus increased with: <?= statNameToLabel($item['hit_talent']) ?>; Critical hit Chance increased with: <?= statNameToLabel($item['crit_stat']) ?>">
                 <div class="col-xs-12"><?= statNameToLabel($itemName) ?></div>
                 <label class="col-xs-8" for="<?= "$id.damage" ?>">Min - Max</label>
-                <span class="col-xs-4" id="<?= "$id.damage" ?>"><span ng-bind="methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>)"></span> - <span ng-bind="methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>)"></span></span>
+                <!-- new -->
+                <span class="col-xs-4" id="<?= "$id.damage" ?>">
+                    <span ng-bind="<?= "$calcMinDmg()" ?>"></span> - <span ng-bind="<?= "$calcMaxDmg()" ?>"></span>
+                </span>
                 <label class="col-xs-8" for="<?= "$id.averageDamage" ?>">Average Damage</label>
-                <span class="col-xs-4" id="<?= "$id.averageDamage" ?>" ng-bind="methods.damageAverage(methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>), methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>), <?= "$dmgTalent" ?>)"></span>
+                <span class="col-xs-4" id="<?= "$id.averageDamage" ?>" ng-bind="<?= "$calcAverageDamage()" ?>"></span>
                 <label class="col-xs-8" for="<?= "$id.hit.bonus" ?>">Hit Bonus</label>
-                <span class="col-xs-4" id="<?= "$id.hit.bonus" ?>"><span ng-bind="methods.hitBonus(<?= "$hitTalent" ?>)"></span></span>
+                <span class="col-xs-4" id="<?= "$id.hit.bonus" ?>"><span ng-bind="<?= "$calcHitBonus()" ?>"></span></span>
                 <label class="col-xs-8" for="<?= "$id.crit.chance" ?>">Crit Chance</label>
-                <span class="col-xs-4" id="<?= "$id.crit.chance" ?>"><span ng-bind="methods.criticalChance(<?= "0, $critStat, $critMod" ?>)"></span></span>
+                <span class="col-xs-4" id="<?= "$id.crit.chance" ?>"><span ng-bind="<?= "$calcCritBonus()" ?>"></span></span>
+                <button class="col-xs-8" ng-click="methods.roll(<?= $id ?>)">Roll for Damage</button>
+                <span class="col-xs-4" id="<?= "$id.dmgRoll" ?>"><span ng-bind="<?= "$damageRoll" ?>"></span></span>
             </div>
             <?php
         }
