@@ -195,6 +195,57 @@ const ITEMS             = [
                 return Math.round((mod * stat) + base);
             };
 
+            $scope.methods.calculateIntercept = function (slope, x, y) {
+                return -(slope*x - y);
+            };
+            $scope.methods.calculateWeight = function (slope, intercept, step) {
+                return Math.round(slope * step + intercept);
+            };
+            $scope.methods.generateTable = function (min, max, average) {
+                let table = [];
+
+                let diff = max - min;
+                let averageBonus = average - min;
+                console.log(min);
+                console.log(max);
+                console.log(average);
+                console.log(diff);
+                console.log(averageBonus);
+
+                if (averageBonus == 0) {
+                    let slope = -1;
+                    let intercept = $scope.methods.calculateIntercept(slope, 0, 1);
+                    for (let i = 0; i > diff; i++){
+                        let weight = $scope.methods.calculateWeight(slope, intercept, i);
+                        table.push({
+                            "weight" : weight,
+                            "damage" : min + i
+                        })
+                    }
+                }
+                else if (averageBonus == diff) {
+                    let slope = 1;
+                    let intercept = $scope.methods.calculateIntercept(slope, diff, 1);
+                    for (let i = 0; i > diff; i++){
+                        let weight = $scope.methods.calculateWeight(slope, intercept, i);
+                        table.push({
+                            "weight" : weight,
+                            "damage" : min + i
+                        })
+                    }
+                }
+                else {
+                    console.log('incomplete code');
+                }
+                console.log(table);
+
+                return table;
+            };
+
+            $scope.methods.roll = function (item) {
+                let table = $scope.methods.generateTable(item.min, item.max, item.average)
+            };
+
             //secondary stat calculation
             $scope.speed = function (char) {
                 return char.dominance + char.dexterity - Math.abs(char.dexterity - char.dominance);
