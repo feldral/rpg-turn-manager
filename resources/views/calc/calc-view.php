@@ -195,61 +195,100 @@ const ITEMS             = [
                 return Math.round((mod * stat) + base);
             };
 
-            $scope.methods.calculateIntercept = function (slope, x, y) {
+            $scope.methods.interceptEquation = function (slope, x, y) {
                 return -(slope * x - y);
             };
             $scope.methods.calculateWeight = function (slope, intercept, step) {
                 return Math.round(slope * step + intercept);
+            };
+            $scope.methods.calculateIntercept = function (diff, average, step) {
+                if (average < (diff / 2)) {
+                    if (step <= average) {
+                        let slope = 1;
+                        let intersect = $scope.methods.interceptEquation(-1 * slope, diff, 1);
+                        let y = $scope.methods.calculateWeight(-1 * slope, intersect, average);
+                        console.log('Y intercept of opposing equation: ' + intersect);
+                        console.log('Y value of the average: ' + y);
+                        return $scope.methods.interceptEquation(slope, average, y);
+                    } else {
+                        let slope = -1;
+                        return $scope.methods.interceptEquation(slope, diff, 1);
+                    }
+                } else if (average > (diff / 2)) {
+                    if (step <= average) {
+                        let slope = 1;
+                        return $scope.methods.interceptEquation(slope, diff, diff + 1);
+                    } else {
+                        let slope = -1;
+                        let intersect = $scope.methods.interceptEquation(-1 * slope, diff, diff + 1);
+                        let y = $scope.methods.calculateWeight(-1 * slope, intersect, average);
+                        console.log('Y intercept of Opposing equation' + intersect);
+                        console.log('Y value of the average' + y);
+                        return $scope.methods.interceptEquation(slope, average, y);
+                    }
+                } else {
+                    return $scope.methods.interceptEquation(1, diff, diff + 1);
+                }
             };
             $scope.methods.generateTable = function (min, max, average) {
                 let table = [];
 
                 let diff = max - min;
                 let averageBonus = average - min;
-                console.log(min);
-                console.log(max);
-                console.log(average);
-                console.log(diff);
-                console.log(averageBonus);
+//                console.log(min);
+//                console.log(max);
+//                console.log(average);
+//                console.log(diff);
+//                console.log(averageBonus);
 
-                if (averageBonus == 0) {
-                    console.log('negative slope');
-                    let slope = -1;
-                    let intercept = $scope.methods.calculateIntercept(slope, diff, 1);
-                    console.log(intercept);
-                    for (let i = 0; i <= diff; i++) {
-                        let weight = $scope.methods.calculateWeight(slope, intercept, i);
-                        table.push({
-                            "weight": weight,
-                            "damage": min + i
-                        })
+                for (let i = 0; i <= diff; i++) {
+                    let slope = 0;
+                    if (i <= averageBonus) {
+                        console.log('positive slope');
+                        slope = 1;
                     }
-                }
-                else if (averageBonus == diff) {
-                    console.log('positive slope');
-                    let slope = 1;
-                    let intercept = $scope.methods.calculateIntercept(slope, diff, diff + 1);
-                    console.log(intercept);
-                    for (let i = 0; i <= diff; i++) {
-                        let weight = $scope.methods.calculateWeight(slope, intercept, i);
-                        table.push({
-                            "weight": weight,
-                            "damage": min + i
-                        })
+                    else {
+                        console.log('negative slope');
+                        slope = -1;
                     }
-                }
-                else {
-                    console.log('incomplete code');
+                    let intercept = $scope.methods.calculateIntercept(diff, averageBonus, i);
+                    console.log('Y intercept for current step: ' + intercept);
+                    let weight = $scope.methods.calculateWeight(slope, intercept, i);
+                    table.push({
+                        "weight": weight,
+                        "damage": min + i
+                    })
                 }
                 console.log(table);
 
                 return table;
             };
-
+            $scope.methods.randomNumber = function (min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            };
             $scope.methods.roll = function (item) {
                 let table = $scope.methods.generateTable(item.calcMin(), item.calcMax(), item.calcAverage());
 
+                let total = 0;
 
+                for (let i = 0; i < table.length; i++) {
+                    total += table[i].weight;
+                }
+
+                console.log(total);
+                let roll = $scope.methods.randomNumber(0, total);
+                console.log(roll);
+
+                let cumulativeWeight = 0;
+                for (let i = 0; i < table.length; i++) {
+                    cumulativeWeight += table[i].weight;
+                    if (roll <= cumulativeWeight) {
+                        item.dmgRoll = table[i].damage;
+                        return;
+                    }
+                }
+
+                item.dmgRoll = 'error';
             };
 
             //secondary stat calculation
