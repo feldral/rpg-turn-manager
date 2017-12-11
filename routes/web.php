@@ -28,6 +28,11 @@ Route::get('/characters/{id}', 'CharacterController@show');
 Route::get('/characters/{id}/edit', 'CharacterController@edit');
 
 /*
+ * Character Calculator Routes
+ */
+Route::get('/characters/calculator', 'CharacterCalculatorController@show');
+
+/*
  * Encounter Type Routes
  */
 Route::get('/encounters/types', 'EncounterTypeController@index');
