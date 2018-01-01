@@ -234,11 +234,47 @@ const ITEMS             = [
     <body ng-app="statCalc" ng-controller="myCtrl">
         <div class="container-fluid">
             <div class="row">
-                <div class="character-one col-xs-5">
+                <div class="play-field col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <?= characterDoll('Character One', 'charOne') ?>
+                        </div>
+                        <div class="col-xs-4">Battle Field
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="battlefield-cover-type">Cover Type</label>
+                                    <select id="battlefield-cover-type">
+                                        <option value="NONE">None</option>
+                                        <option value="PARTIAL">Partial</option>
+                                        <option value="FULL">Full</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label for="battlefield-cover-check">Cover Strength</label>
+                                    <input id="battlefield-cover-check" type="number" min="1" max="100">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <?= characterDoll('Character Two', 'charTwo') ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <button onClick="">Attack</button>
+                        </div>
+                        <div class="col-xs-4">distance between characters</div>
+                        <div class="col-xs-4">
+                            <button onClick="">Attack</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="character-one col-xs-6">
                     <?= characterPanel('Character One', 'charOne') ?>
                 </div>
-                <div class="play-field col-xs-2">Play Field</div>
-                <div class="character-two col-xs-5">
+                <div class="character-two col-xs-6">
                     <?= characterPanel('Character Two', 'charTwo') ?>
                 </div>
             </div>
@@ -363,6 +399,10 @@ const ITEMS             = [
                 item.dmgRoll = 'error';
             };
 
+            $scope.methods.attack = function (item, target, distance, coverType) {
+
+            };
+
             //secondary stat calculation
             $scope.speed = function (char) {
                 return char.dominance + char.dexterity - Math.abs(char.dexterity - char.dominance);
@@ -452,6 +492,56 @@ const ITEMS             = [
     <?php
 
     /**
+     * generates visuals for character in battle
+     *
+     * @param $name
+     * @param $slug
+     *
+     * @return string
+     */
+    function characterDoll($name, $slug)
+    {
+        ?>
+        <span><?= $name ?></span>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Health</label>
+                <span ng-bind="<?= "$slug.currentHealth" ?>"></span>/<span ng-bind="<?= "health($slug)" ?>"></span>
+            </div>
+            <div class="col-xs-4">
+                <label>Will</label>
+                <span ng-bind="<?= "$slug.currentWill" ?>"></span>/<span ng-bind="<?= "will($slug)" ?>"></span></div>
+            <div class="col-xs-4">
+                <label>Energy</label>
+                <span ng-bind="<?= "$slug.currentEnergy" ?>"></span>/<span ng-bind="<?= "energy($slug)" ?>"></span>
+            </div>
+            <div class="col-xs-2">
+                <button onclick="">Reset</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="doll-<?= $slug ?>-stance">Stance</label>
+                <select id="doll-<?= $slug ?>-stance">
+                    <option value="STAND">Standing</option>
+                    <option value="CROUCH">Crouching</option>
+                    <option value="PRONE">Prone</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="doll-<?= $slug ?>-weapon">Weapon</label>
+                <select id="doll-<?= $slug ?>-weapon">
+                    <option value="sword">Sword</option>
+                </select>
+            </div>
+        </div>
+        <?php
+        return '';
+    }
+
+    /**
      * generates visuals for a Character Panel
      *
      * @param $name
@@ -524,6 +614,10 @@ const ITEMS             = [
         ?>
         //stats and talents
         $scope.<?= $slug ?> = [];
+        $scope.<?= $slug . '.currentHealth' ?> = 0;
+        $scope.<?= $slug . '.currentEnergy' ?> = 0;
+        $scope.<?= $slug . '.currentWill' ?> = 0;
+
         <?php
         foreach (TIER_1_STAT_NAMES as $statName) {
             ?>
