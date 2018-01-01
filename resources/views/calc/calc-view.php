@@ -24,6 +24,7 @@ const TALENT_NAMES      = [
     'two_hand',
     'blade',
     'blunt',
+    'pole',
     'fire_magic',
     'ice_magic',
     'projectile_magic',
@@ -32,7 +33,7 @@ const TALENT_NAMES      = [
     'speech_craft',
 ];
 const ITEMS             = [
-    'dagger'      => [
+    'dagger'           => [
         'min'        => 1,
         'max'        => 4,
         'dmg_talent' => 'blade',
@@ -41,8 +42,10 @@ const ITEMS             = [
         'hit_talent' => 'one_hand',
         'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.5,
+        'range_min'  => 0.0,
+        'range_max'  => 0.5,
     ],
-    'short_sword' => [
+    'sword'            => [
         'min'        => 1,
         'max'        => 6,
         'dmg_talent' => 'blade',
@@ -51,18 +54,22 @@ const ITEMS             = [
         'hit_talent' => 'one_hand',
         'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.2,
+        'range_min'  => 0.0,
+        'range_max'  => 1.5,
     ],
-    'long_sword'  => [
+    'axe'              => [
         'min'        => 1,
         'max'        => 8,
-        'dmg_talent' => 'blade',
+        'dmg_talent' => 'blunt',
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.5,
         'hit_talent' => 'two_hand',
         'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.2,
+        'range_min'  => 0.0,
+        'range_max'  => 1.5,
     ],
-    'mace'        => [
+    'mace'             => [
         'min'        => 1,
         'max'        => 6,
         'dmg_talent' => 'blunt',
@@ -71,8 +78,70 @@ const ITEMS             = [
         'hit_talent' => 'one_hand',
         'crit_stat'  => 'dexterity',
         'crit_mod'   => 0.3,
+        'range_min'  => 0.0,
+        'range_max'  => 1.5,
     ],
-    'fire_ball'   => [
+    'spear'            => [
+        'min'        => 1,
+        'max'        => 6,
+        'dmg_talent' => 'pole',
+        'dmg_stat'   => 'dominance',
+        'dmg_mod'    => 0.4,
+        'hit_talent' => 'one_hand',
+        'crit_stat'  => 'dexterity',
+        'crit_mod'   => 0.3,
+        'range_min'  => 0.0,
+        'range_max'  => 1.5,
+    ],
+    'two_handed_sword' => [
+        'min'        => 1,
+        'max'        => 6,
+        'dmg_talent' => 'blade',
+        'dmg_stat'   => 'dominance',
+        'dmg_mod'    => 0.4,
+        'hit_talent' => 'two_hand',
+        'crit_stat'  => 'dexterity',
+        'crit_mod'   => 0.3,
+        'range_min'  => 0.0,
+        'range_max'  => 1.5,
+    ],
+    'two_handed_mace'  => [
+        'min'        => 1,
+        'max'        => 6,
+        'dmg_talent' => 'blunt',
+        'dmg_stat'   => 'dominance',
+        'dmg_mod'    => 0.4,
+        'hit_talent' => 'two_hand',
+        'crit_stat'  => 'dexterity',
+        'crit_mod'   => 0.3,
+        'range_min'  => 0.5,
+        'range_max'  => 2.0,
+    ],
+    'two_handed_axe'   => [
+        'min'        => 1,
+        'max'        => 6,
+        'dmg_talent' => 'blunt',
+        'dmg_stat'   => 'dominance',
+        'dmg_mod'    => 0.4,
+        'hit_talent' => 'two_hand',
+        'crit_stat'  => 'dexterity',
+        'crit_mod'   => 0.3,
+        'range_min'  => 0.5,
+        'range_max'  => 2.0,
+    ],
+    'halberd'          => [
+        'min'        => 1,
+        'max'        => 6,
+        'dmg_talent' => 'pole',
+        'dmg_stat'   => 'dominance',
+        'dmg_mod'    => 0.4,
+        'hit_talent' => 'two_hand',
+        'crit_stat'  => 'dexterity',
+        'crit_mod'   => 0.3,
+        'range_min'  => 0.5,
+        'range_max'  => 2.0,
+    ],
+    'fire_ball'        => [
         'min'        => 1,
         'max'        => 6,
         'dmg_talent' => 'fire_magic',
@@ -81,8 +150,10 @@ const ITEMS             = [
         'hit_talent' => 'projectile_magic',
         'crit_stat'  => 'creativity',
         'crit_mod'   => 0.2,
+        'range_min'  => 2.0,
+        'range_max'  => 8.0,
     ],
-    'frost_bolt'  => [
+    'frost_bolt'       => [
         'min'        => 1,
         'max'        => 4,
         'dmg_talent' => 'ice_magic',
@@ -91,8 +162,10 @@ const ITEMS             = [
         'hit_talent' => 'projectile_magic',
         'crit_stat'  => 'creativity',
         'crit_mod'   => 0.5,
+        'range_min'  => 2.0,
+        'range_max'  => 8.0,
     ],
-    'bribe'       => [
+    'bribe'            => [
         'min'        => 1,
         'max'        => 6,
         'dmg_talent' => 'barter',
@@ -101,8 +174,10 @@ const ITEMS             = [
         'hit_talent' => false,
         'crit_stat'  => 'intuition',
         'crit_mod'   => 0.2,
+        'range_min'  => 2.0,
+        'range_max'  => 8.0,
     ],
-    'intimidate'  => [
+    'intimidate'       => [
         'min'        => 1,
         'max'        => 4,
         'dmg_talent' => 'speech_craft',
@@ -111,11 +186,13 @@ const ITEMS             = [
         'hit_talent' => false,
         'crit_stat'  => 'intuition',
         'crit_mod'   => 0.5,
+        'range_min'  => 2.0,
+        'range_max'  => 8.0,
     ],
 ]
 ?>
 <!doctype html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
