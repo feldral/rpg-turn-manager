@@ -584,19 +584,19 @@ const ITEMS             = [
         </div>
         <div class="row">
             <div class="col-xs-12">Talents</div>
-            <div class="col-xs-12 col-md-6">
+            <div class="col-xs-12">
                 <?php
                 foreach (TALENT_NAMES as $talentName) {
                     ?>
-                    <label class="col-xs-8" for="<?= $slug . $talentName ?>"><?= statNameToLabel($talentName) ?></label>
-                    <input class="col-xs-4" id="<?= $slug . $talentName ?>" type="number" max="100" min="0" ng-model="<?= "$slug.$talentName" ?>" />
+                    <label class="col-xs-8 col-md-4" for="<?= $slug . $talentName ?>"><?= statNameToLabel($talentName) ?></label>
+                    <input class="col-xs-4 col-md-2" id="<?= $slug . $talentName ?>" type="number" max="100" min="0" ng-model="<?= "$slug.$talentName" ?>" />
                     <?php
                 }
                 ?>
             </div>
-            <div class="col-xs-12 col-md-6">
-                <?= items($slug) ?>
-            </div>
+        </div>
+        <div class="row">
+            <?= items($slug) ?>
         </div>
         <?php
         return '';
@@ -626,7 +626,7 @@ const ITEMS             = [
         }
         foreach (TALENT_NAMES as $talentName) {
             ?>
-            $scope.<?= $slug . '.' . $talentName ?> = 1;
+            $scope.<?= $slug . '.' . $talentName ?> = 0;
             <?php
         }
         ?>
@@ -687,21 +687,24 @@ const ITEMS             = [
             $calcHitBonus      = "$slug.items.$itemName.calcHitBonus";
             $damageRoll        = "$slug.items.$itemName.dmgRoll";
             ?>
-            <div class="row itemCard" title="Possible Damage increased with: <?= statNameToLabel($item['dmg_stat']) ?>; Average Damage increased with: <?= statNameToLabel($item['dmg_talent']) ?>; Hit Bonus increased with: <?= statNameToLabel($item['hit_talent']) ?>; Critical hit Chance increased with: <?= statNameToLabel($item['crit_stat']) ?>">
-                <div class="col-xs-12"><?= statNameToLabel($itemName) ?></div>
-                <label class="col-xs-8" for="<?= "$id.damage" ?>">Min - Max</label>
-                <!-- new -->
-                <span class="col-xs-4" id="<?= "$id.damage" ?>">
+
+            <div class="col-xs-12 col-md-6">
+                <div class="row itemCard" title="Possible Damage increased with: <?= statNameToLabel($item['dmg_stat']) ?>; Average Damage increased with: <?= statNameToLabel($item['dmg_talent']) ?>; Hit Bonus increased with: <?= statNameToLabel($item['hit_talent']) ?>; Critical hit Chance increased with: <?= statNameToLabel($item['crit_stat']) ?>">
+                    <div class="col-xs-12"><?= statNameToLabel($itemName) ?></div>
+                    <label class="col-xs-8" for="<?= "$id.damage" ?>">Min - Max</label>
+                    <!-- new -->
+                    <span class="col-xs-4" id="<?= "$id.damage" ?>">
                     <span ng-bind="<?= "$calcMinDmg()" ?>"></span> - <span ng-bind="<?= "$calcMaxDmg()" ?>"></span>
                 </span>
-                <label class="col-xs-8" for="<?= "$id.averageDamage" ?>">Average Damage</label>
-                <span class="col-xs-4" id="<?= "$id.averageDamage" ?>" ng-bind="<?= "$calcAverageDamage()" ?>"></span>
-                <label class="col-xs-8" for="<?= "$id.hit.bonus" ?>">Hit Bonus</label>
-                <span class="col-xs-4" id="<?= "$id.hit.bonus" ?>"><span ng-bind="<?= "$calcHitBonus()" ?>"></span></span>
-                <label class="col-xs-8" for="<?= "$id.crit.chance" ?>">Crit Chance</label>
-                <span class="col-xs-4" id="<?= "$id.crit.chance" ?>"><span ng-bind="<?= "$calcCritBonus()" ?>"></span></span>
-                <button class="col-xs-8" ng-click="methods.roll(<?= $id ?>)">Roll for Damage</button>
-                <span class="col-xs-4" id="<?= "$id.dmgRoll" ?>"><span ng-bind="<?= "$damageRoll" ?>"></span></span>
+                    <label class="col-xs-8" for="<?= "$id.averageDamage" ?>">Average Damage</label>
+                    <span class="col-xs-4" id="<?= "$id.averageDamage" ?>" ng-bind="<?= "$calcAverageDamage()" ?>"></span>
+                    <label class="col-xs-8" for="<?= "$id.hit.bonus" ?>">Hit Bonus</label>
+                    <span class="col-xs-4" id="<?= "$id.hit.bonus" ?>"><span ng-bind="<?= "$calcHitBonus()" ?>"></span></span>
+                    <label class="col-xs-8" for="<?= "$id.crit.chance" ?>">Crit Chance</label>
+                    <span class="col-xs-4" id="<?= "$id.crit.chance" ?>"><span ng-bind="<?= "$calcCritBonus()" ?>"></span></span>
+                    <button class="col-xs-8" ng-click="methods.roll(<?= $id ?>)">Roll for Damage</button>
+                    <span class="col-xs-4" id="<?= "$id.dmgRoll" ?>"><span ng-bind="<?= "$damageRoll" ?>"></span></span>
+                </div>
             </div>
             <?php
         }
