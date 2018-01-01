@@ -320,10 +320,10 @@ const ITEMS             = [
             // preformed classes
             $scope.classes = [];
             $scope.classes.makeTank = function (char) {
-                char.dexterity = 8;
-                char.dominance = 10;
-                char.creativity = 3;
-                char.comprehension = 4;
+                char.dexterity = 10;
+                char.dominance = 20;
+                char.creativity = 5;
+                char.comprehension = 5;
                 char.intuition = 5;
                 char.influence = 5;
                 char.focus = 5;
@@ -332,25 +332,25 @@ const ITEMS             = [
                 //todo talents
             };
             $scope.classes.makeMage = function (char) {
-                char.dexterity = 4;
-                char.dominance = 3;
-                char.creativity = 7;
-                char.comprehension = 10;
+                char.dexterity = 5;
+                char.dominance = 5;
+                char.creativity = 10;
+                char.comprehension = 20;
                 char.intuition = 5;
                 char.influence = 5;
                 char.focus = 10;
-                char.fortitude = 6;
+                char.fortitude = 5;
 
                 //todo talents
             };
             $scope.classes.makeRouge = function (char) {
-                char.dexterity = 10;
-                char.dominance = 5;
+                char.dexterity = 20;
+                char.dominance = 10;
                 char.creativity = 5;
                 char.comprehension = 5;
-                char.intuition = 5;
+                char.intuition = 10;
                 char.influence = 5;
-                char.focus = 10;
+                char.focus = 5;
                 char.fortitude = 5;
 
                 //todo talents
