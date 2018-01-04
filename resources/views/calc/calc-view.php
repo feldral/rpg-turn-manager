@@ -289,6 +289,10 @@ const ITEMS             = [
                 border-color     : darkslategrey;
                 background-color : lightslategrey;
             }
+
+            .simpleBorder {
+                border : 2px solid black;
+            }
         </style>
     </head>
     <body ng-app="statCalc" ng-controller="myCtrl">
@@ -296,10 +300,10 @@ const ITEMS             = [
             <div class="row">
                 <div class="play-field col-xs-12">
                     <div class="row">
-                        <div class="col-xs-4">
+                        <div class="col-xs-4 simpleBorder">
                             <?= characterDoll('Character One', 'charOne') ?>
                         </div>
-                        <div class="col-xs-4">Battle Field
+                        <div class="col-xs-4 simpleBorder">Battle Field
                             <div class="row">
                                 <div class="col-xs-12">
                                     <label for="battlefield-cover-type">Cover Type</label>
@@ -315,7 +319,7 @@ const ITEMS             = [
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-xs-4 simpleBorder">
                             <?= characterDoll('Character Two', 'charTwo') ?>
                         </div>
                     </div>
@@ -331,14 +335,15 @@ const ITEMS             = [
                 </div>
             </div>
             <div class="row">
-                <div class="character-one col-xs-6">
+                <div class="col-xs-6 simpleBorder">
                     <?= characterPanel('Character One', 'charOne') ?>
                 </div>
-                <div class="character-two col-xs-6">
+                <div class="col-xs-6 simpleBorder">
                     <?= characterPanel('Character Two', 'charTwo') ?>
                 </div>
             </div>
-            <div class="row">
+            <div class="row simpleBorder">
+                <div class="col-xs-12"><h2>Items:</h2></div>
                 <div class="col-xs-6 col-md-4 itemCard" ng-repeat="<?= "item in charOne.character_items" ?>">
                     <div class="row">
                         <div class="col-xs-12" ng-bind="item.name"></div>
@@ -609,7 +614,7 @@ const ITEMS             = [
     function characterDoll($name, $slug)
     {
         ?>
-        <span><?= $name ?></span>
+        <h3><?= $name ?></h3>
         <div class="row">
             <div class="col-xs-4">
                 <label>Health</label>
@@ -682,7 +687,7 @@ const ITEMS             = [
     {
         ?>
         <div class="row">
-            <div class="col-xs-12"><?= $name ?></div>
+            <div class="col-xs-12"><h3><?= $name ?></h3></div>
             <div class="col-xs-12">
                 <div class="row classes">
                     <span class="col-xs-4 col-md-3" ng-click="classes.makeTank(<?= $slug ?>)">Tank</span>
