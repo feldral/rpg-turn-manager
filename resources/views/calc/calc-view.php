@@ -476,6 +476,27 @@ const ITEMS             = [
                 return char.comprehension + char.intuition;
             };
 
+            // armor
+            $scope.armors = [
+                <?php
+                foreach (ARMOR as $armor_type => $stats)
+                {
+                ?>
+                {
+                    name: '<?= statNameToLabel($armor_type) ?>',
+                <?php
+                foreach ($stats as $stat => $value) {
+                ?>
+                <?= $stat ?> : <?= $value ?>,
+                <?php
+                }
+                ?>
+                },
+                <?php
+                }
+                ?>
+            ];
+
             // preformed classes
             $scope.classes = [];
             $scope.classes.makeTank = function (char) {
@@ -568,8 +589,8 @@ const ITEMS             = [
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <label for="doll-<?= $slug ?>-stance">Stance</label>
-                <select id="doll-<?= $slug ?>-stance">
+                <label for="doll-<?= $slug ?>-pose">Stance</label>
+                <select id="doll-<?= $slug ?>-pose" ng-model="<?= "$slug.pose" ?>">
                     <option value="STAND">Standing</option>
                     <option value="CROUCH">Crouching</option>
                     <option value="PRONE">Prone</option>
@@ -579,9 +600,12 @@ const ITEMS             = [
         <div class="row">
             <div class="col-xs-12">
                 <label for="doll-<?= $slug ?>-weapon">Weapon</label>
-                <select id="doll-<?= $slug ?>-weapon">
-                    <option value="sword">Sword</option>
+                <select id="doll-<?= $slug ?>-weapon" ng-model="<?= "$slug.armor" ?>" ng-options="weapon as weapon.name for weapon in <?= "$slug.items" ?>">
                 </select>
+                <label for="doll-<?= $slug ?>-armor">Armor</label>
+                <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
+                </select>
+                <div ng-bind="<?= "$slug.armor.glancing_chance" ?>"></div>
             </div>
         </div>
         <?php
