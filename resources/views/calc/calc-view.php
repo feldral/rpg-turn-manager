@@ -339,16 +339,27 @@ const ITEMS             = [
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6 col-md-3 itemCard" ng-repeat="<?= "item in charOne.character_items" ?>">
+                <div class="col-xs-6 col-md-4 itemCard" ng-repeat="<?= "item in charOne.character_items" ?>">
                     <div class="row">
                         <div class="col-xs-12" ng-bind="item.name"></div>
-                        <label class="col-xs-7">Min - Max</label><span class="col-xs-5"><span ng-bind="item.min"></span> - <span ng-bind="item.max"></span></span>
-                        <label class="col-xs-7">Dmg <span ng-bind="item.dmgStatName"></span>:</label><span class="col-xs-5">x<span ng-bind="item.dmgMod"></span></span>
-                        <label class="col-xs-7">Dmg Talent:</label><span class="col-xs-5"><span ng-bind="item.dmgTalentName"></span></span>
-                        <label class="col-xs-7">Crit <span ng-bind="item.critStatName"></span>:</label><span class="col-xs-5">x<span ng-bind="item.critMod"></span></span>
-                        <label class="col-xs-7">Hit Talent:</label><span class="col-xs-5"><span ng-bind="item.hitTalentName"></span></span>
-                        <label class="col-xs-7">Range:</label><span class="col-xs-5"><span ng-bind="item.rangeMin"></span>m - <span ng-bind="item.rangeMax"></span>m</span>
-                        <label class="col-xs-7">Energy Cost:</label><span class="col-xs-5"><span ng-bind="item.engCost"></span></span>
+                        <label class="col-xs-7">Min - Max</label>
+                        <span class="col-xs-5"><span ng-bind="item.min"></span> - <span ng-bind="item.max"></span></span>
+                        <label class="col-xs-7">Dmg
+                            <span ng-bind="item.dmgStatName"></span>:
+                        </label>
+                        <span class="col-xs-5">x<span ng-bind="item.dmgMod"></span></span>
+                        <label class="col-xs-7">Dmg Talent:</label>
+                        <span class="col-xs-5"><span ng-bind="item.dmgTalentName"></span></span>
+                        <label class="col-xs-7">Crit
+                            <span ng-bind="item.critStatName"></span>:
+                        </label>
+                        <span class="col-xs-5">x<span ng-bind="item.critMod"></span></span>
+                        <label class="col-xs-7">Hit Talent:</label>
+                        <span class="col-xs-5"><span ng-bind="item.hitTalentName"></span></span>
+                        <label class="col-xs-7">Range:</label>
+                        <span class="col-xs-5"><span ng-bind="item.rangeMin"></span>m - <span ng-bind="item.rangeMax"></span>m</span>
+                        <label class="col-xs-7">Energy Cost:</label>
+                        <span class="col-xs-5"><span ng-bind="item.engCost"></span></span>
                     </div>
                 </div>
             </div>
