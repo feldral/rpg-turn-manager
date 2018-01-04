@@ -317,19 +317,14 @@ const ITEMS             = [
                                     <label for="battlefield-cover-check">Cover Strength</label>
                                     <input id="battlefield-cover-check" type="number" min="1" max="100">
                                 </div>
+                                <div class="col-xs-12">
+                                    <label for="battlefield-distance">Distance between Characters</label>
+                                    <input id="battlefield-distance" type="number" min="0" max="10">
+                                </div>
                             </div>
                         </div>
                         <div class="col-xs-4 simpleBorder">
                             <?= characterDoll('Character Two', 'charTwo') ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <button onClick="">Attack</button>
-                        </div>
-                        <div class="col-xs-4">distance between characters</div>
-                        <div class="col-xs-4">
-                            <button onClick="">Attack</button>
                         </div>
                     </div>
                 </div>
@@ -343,7 +338,9 @@ const ITEMS             = [
                 </div>
             </div>
             <div class="row simpleBorder">
-                <div class="col-xs-12"><h2>Items:</h2></div>
+                <div class="col-xs-12">
+                    <h2>Items:</h2>
+                </div>
                 <div class="col-xs-6 col-md-4 itemCard" ng-repeat="<?= "item in charOne.character_items" ?>">
                     <div class="row">
                         <div class="col-xs-12" ng-bind="item.name"></div>
@@ -671,6 +668,11 @@ const ITEMS             = [
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button onClick="">Analyze Attack</button>
+            </div>
+        </div>
         <?php
         return '';
     }
@@ -687,7 +689,9 @@ const ITEMS             = [
     {
         ?>
         <div class="row">
-            <div class="col-xs-12"><h3><?= $name ?></h3></div>
+            <div class="col-xs-12">
+                <h3><?= $name ?></h3>
+            </div>
             <div class="col-xs-12">
                 <div class="row classes">
                     <span class="col-xs-4 col-md-3" ng-click="classes.makeTank(<?= $slug ?>)">Tank</span>
