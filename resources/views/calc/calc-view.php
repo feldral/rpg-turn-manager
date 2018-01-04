@@ -32,6 +32,53 @@ const TALENT_NAMES      = [
     'barter',
     'speech_craft',
 ];
+const ARMOR             = [
+    'cloth'      => [
+        'energy_cost'            => 1,
+        'glancing_chance'        => 0,
+        'puncture_protection'    => 0,
+        'slashing_protection'    => 0,
+        'bludgeoning_protection' => 0,
+        'fire_protection'        => 0,
+        'ice_protection'         => 0,
+    ],
+    'leather'    => [
+        'energy_cost'            => 2,
+        'glancing_chance'        => 20,
+        'puncture_protection'    => 3,
+        'slashing_protection'    => 5,
+        'bludgeoning_protection' => 3,
+        'fire_protection'        => 0,
+        'ice_protection'         => 0,
+    ],
+    'brigandine' => [
+        'energy_cost'            => 4,
+        'glancing_chance'        => 30,
+        'puncture_protection'    => 3,
+        'slashing_protection'    => 10,
+        'bludgeoning_protection' => 5,
+        'fire_protection'        => 0,
+        'ice_protection'         => 0,
+    ],
+    'chain'      => [
+        'energy_cost'            => 4,
+        'glancing_chance'        => 30,
+        'puncture_protection'    => 5,
+        'slashing_protection'    => 10,
+        'bludgeoning_protection' => 3,
+        'fire_protection'        => 0,
+        'ice_protection'         => 0,
+    ],
+    'plate'      => [
+        'energy_cost'            => 5,
+        'glancing_chance'        => 40,
+        'puncture_protection'    => 10,
+        'slashing_protection'    => 10,
+        'bludgeoning_protection' => 5,
+        'fire_protection'        => 0,
+        'ice_protection'         => 0,
+    ],
+];
 const ITEMS             = [
     'dagger'           => [
         'min'        => 1,
