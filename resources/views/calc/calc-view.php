@@ -600,12 +600,13 @@ const ITEMS             = [
         <div class="row">
             <div class="col-xs-12">
                 <label for="doll-<?= $slug ?>-weapon">Weapon</label>
-                <select id="doll-<?= $slug ?>-weapon" ng-model="<?= "$slug.armor" ?>" ng-options="weapon as weapon.name for weapon in <?= "$slug.items" ?>">
+                <select id="doll-<?= $slug ?>-weapon" ng-model="<?= "$slug.weapon" ?>" ng-options="weapon as weapon.name for weapon in <?= "$slug.character_items" ?>">
                 </select>
+                Damage Average: <span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>
                 <label for="doll-<?= $slug ?>-armor">Armor</label>
                 <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
                 </select>
-                <div ng-bind="<?= "$slug.armor.glancing_chance" ?>"></div>
+                Glancing Chance: <div ng-bind="<?= "$slug.armor.glancing_chance" ?>"></div>
             </div>
         </div>
         <?php
@@ -736,6 +737,46 @@ const ITEMS             = [
             <?= $id ?>.dmgRoll = '*';
             <?php
         }
+
+
+        ?>
+        $scope.<?= $slug ?>.character_items = [
+        <?php
+        foreach (ITEMS as $itemName => $item) {
+            $dmgMod     = "\$scope.$slug.items.$itemName.dmgMod";
+            $minDmg     = "\$scope.$slug.items.$itemName.min";
+            $maxDmg     = "\$scope.$slug.items.$itemName.max";
+            $calcMinDmg = "\$scope.$slug.items.$itemName.calcMin";
+            $calcMaxDmg = "\$scope.$slug.items.$itemName.calcMax";
+            $dmgStat    = "\$scope.$slug.{$item['dmg_stat']}";
+            $dmgTalent  = "\$scope.$slug.{$item['dmg_talent']}";
+            $critStat   = "\$scope.$slug.{$item['crit_stat']}";
+            $critMod    = "\$scope.$slug.items.$itemName.critMod";
+
+            if ($item['hit_talent']) {
+                $hitTalent = "\$scope.$slug.{$item['hit_talent']}";
+            } else {
+                $hitTalent = 0;
+            }
+            ?>
+            {
+                name : '<?= statNameToLabel($itemName) ?>',
+                min : <?= $item['min'] ?>,
+                max : <?= $item['max'] ?>,
+                calcMin : function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); },
+                calcMax : function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); },
+                calcAverage : function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); },
+                dmgMod : <?= $item['dmg_mod'] ?>,
+                critMod : <?= $item['crit_mod'] ?>,
+                calcCritBonus : function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); },
+                calcHitBonus : function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); },
+                dmgRoll : '*',
+            },
+            <?php
+        }
+        ?>
+        ];
+        <?php
 
         return '';
     }
