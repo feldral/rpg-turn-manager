@@ -321,6 +321,9 @@ const ITEMS             = [
                                     <label for="battlefield-distance">Distance between Characters</label>
                                     <input id="battlefield-distance" type="number" min="0" max="10">
                                 </div>
+                                <div class="col-xs-12">
+                                    <h4>Statistics:</h4>
+                                </div>
                             </div>
                         </div>
                         <div class="col-xs-4 simpleBorder">
@@ -656,15 +659,21 @@ const ITEMS             = [
                     <div class="col-xs-12 col-md-6">
                         <div class="row">
                             <label class="col-xs-8">Glancing Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.glancing_chance" ?>"></span></span>
+                            <label class="col-xs-8">Energy Cost</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost" ?>"></span></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <div class="row">
-                            <label class="col-xs-8">Min Damage</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span></span>
-                            <label class="col-xs-8">Average Damage</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span></span>
-                            <label class="col-xs-8">Max Damage</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
+                            <label class="col-xs-8">Avoid Glancing Blow</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcHitBonus()" ?>"></span></span>
+                            <label class="col-xs-8">Min/Avg/Max Damage:</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
+                            <label class="col-xs-8">Critical Hit Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcCritBonus()" ?>"></span></span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <label class="col-xs-8">Movement Range</label><span></span>
+                    <label class="col-xs-8">Eng/Meter Moved</label><span></span>
+                    <label class="col-xs-8">Eng/Attack</label><span></span>
                 </div>
             </div>
         </div>
