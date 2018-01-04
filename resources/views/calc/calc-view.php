@@ -91,6 +91,7 @@ const ITEMS             = [
         'crit_mod'   => 0.5,
         'range_min'  => 0.0,
         'range_max'  => 0.5,
+        'eng_cost'   => 1,
     ],
     'sword'            => [
         'min'        => 1,
@@ -103,10 +104,11 @@ const ITEMS             = [
         'crit_mod'   => 0.2,
         'range_min'  => 0.0,
         'range_max'  => 1.5,
+        'eng_cost'   => 2,
     ],
     'axe'              => [
         'min'        => 1,
-        'max'        => 8,
+        'max'        => 6,
         'dmg_talent' => 'blunt',
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.5,
@@ -115,6 +117,7 @@ const ITEMS             = [
         'crit_mod'   => 0.2,
         'range_min'  => 0.0,
         'range_max'  => 1.5,
+        'eng_cost'   => 2,
     ],
     'mace'             => [
         'min'        => 1,
@@ -127,6 +130,7 @@ const ITEMS             = [
         'crit_mod'   => 0.3,
         'range_min'  => 0.0,
         'range_max'  => 1.5,
+        'eng_cost'   => 2,
     ],
     'spear'            => [
         'min'        => 1,
@@ -139,10 +143,11 @@ const ITEMS             = [
         'crit_mod'   => 0.3,
         'range_min'  => 0.0,
         'range_max'  => 1.5,
+        'eng_cost'   => 2,
     ],
     'two_handed_sword' => [
-        'min'        => 1,
-        'max'        => 6,
+        'min'        => 3,
+        'max'        => 9,
         'dmg_talent' => 'blade',
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.4,
@@ -151,10 +156,11 @@ const ITEMS             = [
         'crit_mod'   => 0.3,
         'range_min'  => 0.0,
         'range_max'  => 1.5,
+        'eng_cost'   => 4,
     ],
     'two_handed_mace'  => [
-        'min'        => 1,
-        'max'        => 6,
+        'min'        => 3,
+        'max'        => 9,
         'dmg_talent' => 'blunt',
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.4,
@@ -163,10 +169,11 @@ const ITEMS             = [
         'crit_mod'   => 0.3,
         'range_min'  => 0.5,
         'range_max'  => 2.0,
+        'eng_cost'   => 4,
     ],
     'two_handed_axe'   => [
-        'min'        => 1,
-        'max'        => 6,
+        'min'        => 3,
+        'max'        => 9,
         'dmg_talent' => 'blunt',
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.4,
@@ -175,10 +182,11 @@ const ITEMS             = [
         'crit_mod'   => 0.3,
         'range_min'  => 0.5,
         'range_max'  => 2.0,
+        'eng_cost'   => 4,
     ],
     'halberd'          => [
-        'min'        => 1,
-        'max'        => 6,
+        'min'        => 3,
+        'max'        => 9,
         'dmg_talent' => 'pole',
         'dmg_stat'   => 'dominance',
         'dmg_mod'    => 0.4,
@@ -187,6 +195,7 @@ const ITEMS             = [
         'crit_mod'   => 0.3,
         'range_min'  => 0.5,
         'range_max'  => 2.0,
+        'eng_cost'   => 4,
     ],
     'fire_ball'        => [
         'min'        => 1,
@@ -199,6 +208,7 @@ const ITEMS             = [
         'crit_mod'   => 0.2,
         'range_min'  => 2.0,
         'range_max'  => 8.0,
+        'eng_cost'   => 4,
     ],
     'frost_bolt'       => [
         'min'        => 1,
@@ -211,6 +221,7 @@ const ITEMS             = [
         'crit_mod'   => 0.5,
         'range_min'  => 2.0,
         'range_max'  => 8.0,
+        'eng_cost'   => 2,
     ],
     'bribe'            => [
         'min'        => 1,
@@ -221,8 +232,9 @@ const ITEMS             = [
         'hit_talent' => false,
         'crit_stat'  => 'intuition',
         'crit_mod'   => 0.2,
-        'range_min'  => 2.0,
+        'range_min'  => 0.0,
         'range_max'  => 8.0,
+        'eng_cost'   => 4,
     ],
     'intimidate'       => [
         'min'        => 1,
@@ -233,8 +245,9 @@ const ITEMS             = [
         'hit_talent' => false,
         'crit_stat'  => 'intuition',
         'crit_mod'   => 0.5,
-        'range_min'  => 2.0,
+        'range_min'  => 0.0,
         'range_max'  => 8.0,
+        'eng_cost'   => 2,
     ],
 ]
 ?>
@@ -484,18 +497,19 @@ const ITEMS             = [
                 ?>
                 {
                     name: '<?= statNameToLabel($armor_type) ?>',
-                <?php
-                foreach ($stats as $stat => $value) {
-                ?>
-                <?= $stat ?> : <?= $value ?>,
-                <?php
-                }
-                ?>
-                },
-                <?php
-                }
-                ?>
-            ];
+            <?php
+            foreach ($stats as $stat => $value) {
+            ?>
+            <?= $stat ?> : <?= $value ?>,
+            <?php
+            }
+            ?>
+        },
+            <?php
+            }
+            ?>
+            ]
+            ;
 
             // preformed classes
             $scope.classes = [];
@@ -606,7 +620,8 @@ const ITEMS             = [
                 <label for="doll-<?= $slug ?>-armor">Armor</label>
                 <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
                 </select>
-                Glancing Chance: <div ng-bind="<?= "$slug.armor.glancing_chance" ?>"></div>
+                Glancing Chance:
+                <div ng-bind="<?= "$slug.armor.glancing_chance" ?>"></div>
             </div>
         </div>
         <?php
@@ -686,9 +701,10 @@ const ITEMS             = [
         ?>
         //stats and talents
         $scope.<?= $slug ?> = [];
-        $scope.<?= $slug . '.currentHealth' ?> = 0;
-        $scope.<?= $slug . '.currentEnergy' ?> = 0;
-        $scope.<?= $slug . '.currentWill' ?> = 0;
+        $scope.<?= "$slug.currentHealth" ?> = 0;
+        $scope.<?= "$slug.currentEnergy" ?> = 0;
+        $scope.<?= "$slug.currentWill" ?> = 0;
+        $scope.<?= "$slug.pose" ?> = 'STAND';
 
         <?php
         foreach (TIER_1_STAT_NAMES as $statName) {
@@ -738,7 +754,6 @@ const ITEMS             = [
             <?php
         }
 
-
         ?>
         $scope.<?= $slug ?>.character_items = [
         <?php
@@ -760,17 +775,17 @@ const ITEMS             = [
             }
             ?>
             {
-                name : '<?= statNameToLabel($itemName) ?>',
-                min : <?= $item['min'] ?>,
-                max : <?= $item['max'] ?>,
-                calcMin : function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); },
-                calcMax : function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); },
-                calcAverage : function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); },
-                dmgMod : <?= $item['dmg_mod'] ?>,
-                critMod : <?= $item['crit_mod'] ?>,
-                calcCritBonus : function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); },
-                calcHitBonus : function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); },
-                dmgRoll : '*',
+            name : '<?= statNameToLabel($itemName) ?>',
+            min : <?= $item['min'] ?>,
+            max : <?= $item['max'] ?>,
+            calcMin : function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); },
+            calcMax : function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); },
+            calcAverage : function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); },
+            dmgMod : <?= $item['dmg_mod'] ?>,
+            critMod : <?= $item['crit_mod'] ?>,
+            calcCritBonus : function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); },
+            calcHitBonus : function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); },
+            dmgRoll : '*',
             },
             <?php
         }
