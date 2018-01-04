@@ -757,6 +757,43 @@ const ITEMS             = [
             <?php
         }
         ?>
+
+        $scope.<?= $slug ?>.items = [];
+        <?php
+        foreach (ITEMS as $itemName => $item) {
+            $id         = "\$scope.$slug.items.$itemName";
+            $dmgMod     = "\$scope.$slug.items.$itemName.dmgMod";
+            $minDmg     = "\$scope.$slug.items.$itemName.min";
+            $maxDmg     = "\$scope.$slug.items.$itemName.max";
+            $calcMinDmg = "\$scope.$slug.items.$itemName.calcMin";
+            $calcMaxDmg = "\$scope.$slug.items.$itemName.calcMax";
+            $dmgStat    = "\$scope.$slug.{$item['dmg_stat']}";
+            $dmgTalent  = "\$scope.$slug.{$item['dmg_talent']}";
+            $critStat   = "\$scope.$slug.{$item['crit_stat']}";
+            $critMod    = "\$scope.$slug.items.$itemName.critMod";
+
+            if ($item['hit_talent']) {
+                $hitTalent = "\$scope.$slug.{$item['hit_talent']}";
+            } else {
+                $hitTalent = 0;
+            }
+
+            ?>
+            <?= $id ?> = [];
+            <?= $id ?>.min = <?= $item['min'] ?>;
+            <?= $id ?>.max = <?= $item['max'] ?>;
+            <?= $id ?>.calcMin = function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); };
+            <?= $id ?>.calcMax = function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); };
+            <?= $id ?>.calcAverage = function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); };
+            <?= $id ?>.dmgMod = <?= $item['dmg_mod'] ?>;
+            <?= $id ?>.critMod = <?= $item['crit_mod'] ?>;
+            <?= $id ?>.calcCritBonus = function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); };
+            <?= $id ?>.calcHitBonus = function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); };
+            <?= $id ?>.dmgRoll = '*';
+            <?php
+        }
+        ?>
+
         $scope.<?= $slug ?>.character_items = [
         <?php
         foreach (ITEMS as $itemName => $item) {
