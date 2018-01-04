@@ -338,6 +338,20 @@ const ITEMS             = [
                     <?= characterPanel('Character Two', 'charTwo') ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3 itemCard" ng-repeat="<?= "item in charOne.character_items" ?>">
+                    <div class="row">
+                        <div class="col-xs-12" ng-bind="item.name"></div>
+                        <label class="col-xs-7">Min - Max</label><span class="col-xs-5"><span ng-bind="item.min"></span> - <span ng-bind="item.max"></span></span>
+                        <label class="col-xs-7">Dmg <span ng-bind="item.dmgStatName"></span>:</label><span class="col-xs-5">x<span ng-bind="item.dmgMod"></span></span>
+                        <label class="col-xs-7">Dmg Talent:</label><span class="col-xs-5"><span ng-bind="item.dmgTalentName"></span></span>
+                        <label class="col-xs-7">Crit <span ng-bind="item.critStatName"></span>:</label><span class="col-xs-5">x<span ng-bind="item.critMod"></span></span>
+                        <label class="col-xs-7">Hit Talent:</label><span class="col-xs-5"><span ng-bind="item.hitTalentName"></span></span>
+                        <label class="col-xs-7">Range:</label><span class="col-xs-5"><span ng-bind="item.rangeMin"></span>m - <span ng-bind="item.rangeMax"></span>m</span>
+                        <label class="col-xs-7">Energy Cost:</label><span class="col-xs-5"><span ng-bind="item.engCost"></span></span>
+                    </div>
+                </div>
+            </div>
     </body>
     <script>
         var app = angular.module('statCalc', []);
@@ -613,15 +627,32 @@ const ITEMS             = [
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <label for="doll-<?= $slug ?>-weapon">Weapon</label>
-                <select id="doll-<?= $slug ?>-weapon" ng-model="<?= "$slug.weapon" ?>" ng-options="weapon as weapon.name for weapon in <?= "$slug.character_items" ?>">
-                </select>
-                Damage Average: <span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>
-                <label for="doll-<?= $slug ?>-armor">Armor</label>
-                <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
-                </select>
-                Glancing Chance:
-                <div ng-bind="<?= "$slug.armor.glancing_chance" ?>"></div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <label for="doll-<?= $slug ?>-armor">Armor</label>
+                        <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label for="doll-<?= $slug ?>-weapon">Weapon</label>
+                        <select id="doll-<?= $slug ?>-weapon" ng-model="<?= "$slug.weapon" ?>" ng-options="weapon as weapon.name for weapon in <?= "$slug.character_items" ?>">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="row">
+                            <label class="col-xs-8">Glancing Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.glancing_chance" ?>"></span></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="row">
+                            <label class="col-xs-8">Min Damage</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span></span>
+                            <label class="col-xs-8">Average Damage</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span></span>
+                            <label class="col-xs-8">Max Damage</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <?php
@@ -682,9 +713,6 @@ const ITEMS             = [
                 ?>
             </div>
         </div>
-        <div class="row">
-            <?= items($slug) ?>
-        </div>
         <?php
         return '';
     }
@@ -718,43 +746,6 @@ const ITEMS             = [
             <?php
         }
         ?>
-        $scope.<?= $slug ?>.items = [];
-
-        <?php
-        foreach (ITEMS as $itemName => $item) {
-            $id         = "\$scope.$slug.items.$itemName";
-            $dmgMod     = "\$scope.$slug.items.$itemName.dmgMod";
-            $minDmg     = "\$scope.$slug.items.$itemName.min";
-            $maxDmg     = "\$scope.$slug.items.$itemName.max";
-            $calcMinDmg = "\$scope.$slug.items.$itemName.calcMin";
-            $calcMaxDmg = "\$scope.$slug.items.$itemName.calcMax";
-            $dmgStat    = "\$scope.$slug.{$item['dmg_stat']}";
-            $dmgTalent  = "\$scope.$slug.{$item['dmg_talent']}";
-            $critStat   = "\$scope.$slug.{$item['crit_stat']}";
-            $critMod    = "\$scope.$slug.items.$itemName.critMod";
-
-            if ($item['hit_talent']) {
-                $hitTalent = "\$scope.$slug.{$item['hit_talent']}";
-            } else {
-                $hitTalent = 0;
-            }
-
-            ?>
-            <?= $id ?> = [];
-            <?= $id ?>.min = <?= $item['min'] ?>;
-            <?= $id ?>.max = <?= $item['max'] ?>;
-            <?= $id ?>.calcMin = function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); };
-            <?= $id ?>.calcMax = function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); };
-            <?= $id ?>.calcAverage = function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); };
-            <?= $id ?>.dmgMod = <?= $item['dmg_mod'] ?>;
-            <?= $id ?>.critMod = <?= $item['crit_mod'] ?>;
-            <?= $id ?>.calcCritBonus = function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); };
-            <?= $id ?>.calcHitBonus = function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); };
-            <?= $id ?>.dmgRoll = '*';
-            <?php
-        }
-
-        ?>
         $scope.<?= $slug ?>.character_items = [
         <?php
         foreach (ITEMS as $itemName => $item) {
@@ -778,11 +769,18 @@ const ITEMS             = [
             name : '<?= statNameToLabel($itemName) ?>',
             min : <?= $item['min'] ?>,
             max : <?= $item['max'] ?>,
+            rangeMin : <?= $item['range_min'] ?>,
+            rangeMax : <?= $item['range_max'] ?>,
+            engCost : <?= $item['eng_cost'] ?>,
             calcMin : function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); },
             calcMax : function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); },
             calcAverage : function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); },
             dmgMod : <?= $item['dmg_mod'] ?>,
+            dmgStatName : '<?= statNameToLabel($item['dmg_stat']) ?>',
+            dmgTalentName : '<?= statNameToLabel($item['dmg_talent']) ?>',
             critMod : <?= $item['crit_mod'] ?>,
+            critStatName : '<?= statNameToLabel($item['crit_stat']) ?>',
+            hitTalentName : '<?= statNameToLabel($item['hit_talent']) ?>',
             calcCritBonus : function () { return $scope.methods.criticalChance(<?= "0, $critStat, $critMod" ?>); },
             calcHitBonus : function () { return $scope.methods.hitBonus(<?= "$hitTalent" ?>); },
             dmgRoll : '*',
