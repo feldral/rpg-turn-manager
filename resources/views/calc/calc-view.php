@@ -92,6 +92,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 0.5,
         'eng_cost'   => 1,
+        'type'       => 'melee',
     ],
     'sword'            => [
         'min'        => 1,
@@ -105,6 +106,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 1.5,
         'eng_cost'   => 2,
+        'type'       => 'melee',
     ],
     'axe'              => [
         'min'        => 1,
@@ -118,6 +120,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 1.5,
         'eng_cost'   => 2,
+        'type'       => 'melee',
     ],
     'mace'             => [
         'min'        => 1,
@@ -131,6 +134,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 1.5,
         'eng_cost'   => 2,
+        'type'       => 'melee',
     ],
     'spear'            => [
         'min'        => 1,
@@ -144,6 +148,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 1.5,
         'eng_cost'   => 2,
+        'type'       => 'melee',
     ],
     'two_handed_sword' => [
         'min'        => 3,
@@ -157,6 +162,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 1.5,
         'eng_cost'   => 4,
+        'type'       => 'melee',
     ],
     'two_handed_mace'  => [
         'min'        => 3,
@@ -170,6 +176,7 @@ const ITEMS             = [
         'range_min'  => 0.5,
         'range_max'  => 2.0,
         'eng_cost'   => 4,
+        'type'       => 'melee',
     ],
     'two_handed_axe'   => [
         'min'        => 3,
@@ -183,6 +190,7 @@ const ITEMS             = [
         'range_min'  => 0.5,
         'range_max'  => 2.0,
         'eng_cost'   => 4,
+        'type'       => 'melee',
     ],
     'halberd'          => [
         'min'        => 3,
@@ -196,6 +204,7 @@ const ITEMS             = [
         'range_min'  => 0.5,
         'range_max'  => 2.0,
         'eng_cost'   => 4,
+        'type'       => 'melee',
     ],
     'fire_ball'        => [
         'min'        => 1,
@@ -209,6 +218,7 @@ const ITEMS             = [
         'range_min'  => 2.0,
         'range_max'  => 8.0,
         'eng_cost'   => 4,
+        'type'       => 'range',
     ],
     'frost_bolt'       => [
         'min'        => 1,
@@ -222,6 +232,7 @@ const ITEMS             = [
         'range_min'  => 2.0,
         'range_max'  => 8.0,
         'eng_cost'   => 2,
+        'type'       => 'range',
     ],
     'bribe'            => [
         'min'        => 1,
@@ -235,6 +246,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 8.0,
         'eng_cost'   => 4,
+        'type'       => 'instant',
     ],
     'intimidate'       => [
         'min'        => 1,
@@ -248,6 +260,7 @@ const ITEMS             = [
         'range_min'  => 0.0,
         'range_max'  => 8.0,
         'eng_cost'   => 2,
+        'type'       => 'instant',
     ],
 ]
 ?>
@@ -301,13 +314,13 @@ const ITEMS             = [
                 <div class="play-field col-xs-12">
                     <div class="row">
                         <div class="col-xs-4 simpleBorder">
-                            <?= characterDoll('Character One', 'charOne') ?>
+                            <?= characterDoll('Character One', 'charOne', 'charTwo') ?>
                         </div>
                         <div class="col-xs-4 simpleBorder">Battle Field
                             <div class="row">
                                 <div class="col-xs-12">
                                     <label for="battlefield-cover-type">Cover Type</label>
-                                    <select id="battlefield-cover-type">
+                                    <select id="battlefield-cover-type" ng-model="battlefield.coverType">
                                         <option value="NONE">None</option>
                                         <option value="PARTIAL">Partial</option>
                                         <option value="FULL">Full</option>
@@ -315,11 +328,11 @@ const ITEMS             = [
                                 </div>
                                 <div class="col-xs-12">
                                     <label for="battlefield-cover-check">Cover Strength</label>
-                                    <input id="battlefield-cover-check" type="number" min="1" max="100">
+                                    <input id="battlefield-cover-check" ng-model="battlefield.coverCheck" type="number" min="1" max="100">
                                 </div>
                                 <div class="col-xs-12">
                                     <label for="battlefield-distance">Distance between Characters</label>
-                                    <input id="battlefield-distance" type="number" min="0" max="10">
+                                    <input id="battlefield-distance" ng-model="battlefield.distance" type="number" min="0" max="10">
                                 </div>
                                 <div class="col-xs-12">
                                     <h4>Statistics:</h4>
@@ -327,7 +340,7 @@ const ITEMS             = [
                             </div>
                         </div>
                         <div class="col-xs-4 simpleBorder">
-                            <?= characterDoll('Character Two', 'charTwo') ?>
+                            <?= characterDoll('Character Two', 'charTwo', 'charOne') ?>
                         </div>
                     </div>
                 </div>
@@ -346,7 +359,8 @@ const ITEMS             = [
                 </div>
                 <div class="col-xs-6 col-md-4 itemCard" ng-repeat="<?= "item in charOne.character_items" ?>">
                     <div class="row">
-                        <div class="col-xs-12" ng-bind="item.name"></div>
+                        <div class="col-xs-12"><span ng-bind="item.name"></span> [<span ng-bind="item.type"></span>]
+                        </div>
                         <label class="col-xs-7">Min - Max</label>
                         <span class="col-xs-5"><span ng-bind="item.min"></span> - <span ng-bind="item.max"></span></span>
                         <label class="col-xs-7">Dmg
@@ -489,7 +503,29 @@ const ITEMS             = [
                 item.dmgRoll = 'error';
             };
 
-            $scope.methods.attack = function (item, target, distance, coverType) {
+            $scope.battlefield = {};
+            $scope.battlefield.distance = 1.0;
+            $scope.battlefield.coverType = 'NONE';
+            $scope.battlefield.coverCheck = 0;
+            $scope.activityFeed = [];
+
+            $scope.methods.attack = function (item, target, distance, coverType, coverCheck) {
+                if (item.rangeMin >= distance || item.rangeMax <= distance) {
+                    $scope.activityFeed.add({result: 'miss', reason: 'not in range'});
+                }
+                // now I know that I am in range
+
+                let isHit = false;
+                if (item.type == 'instant') {
+                    isHit = true
+                } else if (item.type == 'melee') {
+                    //todo analyze cover
+                    if (coverType == 'NONE'){
+                        isHit = true;
+                    }
+                } else if (item.type == 'range') {
+
+                }
 
             };
 
@@ -611,7 +647,7 @@ const ITEMS             = [
      *
      * @return string
      */
-    function characterDoll($name, $slug)
+    function characterDoll($name, $slug, $otherSlug)
     {
         ?>
         <h3><?= $name ?></h3>
@@ -681,7 +717,7 @@ const ITEMS             = [
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button onClick="">Analyze Attack</button>
+                <button ng-click="methods.attack(<?= "$slug.weapon, $otherSlug, battlefield.distance, battlefield.coverType, battlefield.coverCheck" ?>)">Analyze Attack</button>
             </div>
         </div>
         <?php
@@ -835,6 +871,7 @@ const ITEMS             = [
             ?>
             {
             name : '<?= statNameToLabel($itemName) ?>',
+            type : '<?= statNameToLabel($item['type']) ?>',
             min : <?= $item['min'] ?>,
             max : <?= $item['max'] ?>,
             rangeMin : <?= $item['range_min'] ?>,
