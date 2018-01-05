@@ -622,7 +622,8 @@ const ITEMS             = [
             </div>
             <div class="col-xs-4">
                 <label>Will</label>
-                <span ng-bind="<?= "$slug.currentWill" ?>"></span>/<span ng-bind="<?= "will($slug)" ?>"></span></div>
+                <span ng-bind="<?= "$slug.currentWill" ?>"></span>/<span ng-bind="<?= "will($slug)" ?>"></span>
+            </div>
             <div class="col-xs-4">
                 <label>Energy</label>
                 <span ng-bind="<?= "$slug.currentEnergy" ?>"></span>/<span ng-bind="<?= "energy($slug)" ?>"></span>
@@ -666,14 +667,15 @@ const ITEMS             = [
                         <div class="row">
                             <label class="col-xs-8">Avoid Glancing Blow</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcHitBonus()" ?>"></span></span>
                             <label class="col-xs-8">Min/Avg/Max Damage:</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
-                            <label class="col-xs-8">Critical Hit Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcCritBonus()" ?>"></span></span>
+                            <label class="col-xs-8">Critical Hit Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcCritBonus()" ?>"></span>%</span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-xs-8">Movement Range</label><span></span>
-                    <label class="col-xs-8">Eng/Meter Moved</label><span></span>
-                    <label class="col-xs-8">Eng/Attack</label><span></span>
+                    <label class="col-xs-8">Energy Regen</label><span class="col-xs-4"><span ng-bind="<?= "energy_regen($slug)" ?>"></span> per turn</span>
+                    <label class="col-xs-8">Movement Range</label><span class="col-xs-4"><span ng-bind="<?= "speed($slug) / 10" ?>"></span> m per turn</span>
+                    <label class="col-xs-8">Eng/Meter Moved</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost" ?>"></span> eng/m</span>
+                    <label class="col-xs-8">Eng/Attack</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost + $slug.weapon.engCost" ?>"></span> eng/a</span>
                 </div>
             </div>
         </div>
