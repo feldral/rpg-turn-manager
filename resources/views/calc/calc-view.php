@@ -336,6 +336,12 @@ const ITEMS             = [
                                 </div>
                                 <div class="col-xs-12">
                                     <h4>Statistics:</h4>
+                                    <div ng-repeat="activity in activityFeed">
+                                        In Range: <span ng-bind="activity.isInRange"> </span>
+                                        Hit: <span ng-bind="activity.isHit"> </span>
+                                        Glance: <span ng-bind="activity.isGlance"> </span>
+                                        Damage: <span ng-bind="activity.damageDone"> </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -424,8 +430,8 @@ const ITEMS             = [
                         let slope = 1;
                         let intersect = $scope.methods.interceptEquation(-1 * slope, diff, 1);
                         let y = $scope.methods.calculateWeight(-1 * slope, intersect, average);
-                        console.log('Y intercept of opposing equation: ' + intersect);
-                        console.log('Y value of the average: ' + y);
+                        //                        console.log('Y intercept of opposing equation: ' + intersect);
+                        //                        console.log('Y value of the average: ' + y);
                         return $scope.methods.interceptEquation(slope, average, y);
                     } else {
                         let slope = -1;
@@ -439,8 +445,8 @@ const ITEMS             = [
                         let slope = -1;
                         let intersect = $scope.methods.interceptEquation(-1 * slope, diff, diff + 1);
                         let y = $scope.methods.calculateWeight(-1 * slope, intersect, average);
-                        console.log('Y intercept of Opposing equation' + intersect);
-                        console.log('Y value of the average' + y);
+                        //                        console.log('Y intercept of Opposing equation' + intersect);
+                        //                        console.log('Y value of the average' + y);
                         return $scope.methods.interceptEquation(slope, average, y);
                     }
                 } else {
@@ -456,15 +462,15 @@ const ITEMS             = [
                 for (let i = 0; i <= diff; i++) {
                     let slope = 0;
                     if (i <= averageBonus) {
-                        console.log('positive slope');
+                        //                        console.log('positive slope');
                         slope = 1;
                     }
                     else {
-                        console.log('negative slope');
+                        //                        console.log('negative slope');
                         slope = -1;
                     }
                     let intercept = $scope.methods.calculateIntercept(diff, averageBonus, i);
-                    console.log('Y intercept for current step: ' + intercept);
+                    //                    console.log('Y intercept for current step: ' + intercept);
                     let weight = $scope.methods.calculateWeight(slope, intercept, i);
                     table.push({
                         "weight": weight,
@@ -487,16 +493,16 @@ const ITEMS             = [
                     total += table[i].weight;
                 }
 
-                console.log(total);
+                //                console.log(total);
                 let roll = $scope.methods.randomNumber(0, total);
-                console.log(roll);
+                //                console.log(roll);
 
                 let cumulativeWeight = 0;
                 for (let i = 0; i < table.length; i++) {
                     cumulativeWeight += table[i].weight;
                     if (roll <= cumulativeWeight) {
                         item.dmgRoll = table[i].damage;
-                        return;
+                        return table[i].damage;
                     }
                 }
 
@@ -509,24 +515,46 @@ const ITEMS             = [
             $scope.battlefield.coverCheck = 0;
             $scope.activityFeed = [];
 
-            $scope.methods.attack = function (item, target, distance, coverType, coverCheck) {
-                if (item.rangeMin >= distance || item.rangeMax <= distance) {
-                    $scope.activityFeed.add({result: 'miss', reason: 'not in range'});
-                }
-                // now I know that I am in range
+            $scope.methods.attack = function (attacker, target, distance, coverType, coverCheck) {
+                let result = {
+                    isInRange: false,
+                    isHit: false,
+                    isGlance: false,
+                    damageDone: 0
+                };
 
-                let isHit = false;
-                if (item.type == 'instant') {
-                    isHit = true
-                } else if (item.type == 'melee') {
-                    //todo analyze cover
-                    if (coverType == 'NONE'){
-                        isHit = true;
+                if (attacker.weapon.rangeMin <= distance && attacker.weapon.rangeMax >= distance) {
+                    result.isInRange = true;
+                    if (attacker.weapon.type == 'Instant') {
+                        result.isHit = true
+                    } else if (attacker.weapon.type == 'Melee') {
+                        //todo analyze cover
+                        if (coverType == 'NONE') {
+                            result.isHit = true;
+                        } else if (coverType == 'PARTIAL') {
+
+                        } else if (coverType == 'FULL') {
+
+                        }
+                    } else if (attacker.weapon.type == 'Range') {
+
                     }
-                } else if (item.type == 'range') {
 
+                    if (result.isHit) {
+                        result.damageDone = $scope.methods.roll(attacker.weapon);
+
+                        let glanceCheck = $scope.methods.randomNumber(0, 100);
+                        result.isGlance = (glanceCheck > target.armor.glancing_chance);
+
+                        if (result.isGlance) {
+                            result.damageDone = Math.round(result.damageDone * 0.25);
+                        }
+                    }
                 }
 
+
+                console.log(result);
+                $scope.activityFeed.push(result);
             };
 
             //secondary stat calculation
@@ -717,7 +745,7 @@ const ITEMS             = [
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button ng-click="methods.attack(<?= "$slug.weapon, $otherSlug, battlefield.distance, battlefield.coverType, battlefield.coverCheck" ?>)">Analyze Attack</button>
+                <button ng-click="methods.attack(<?= "$slug, $otherSlug, battlefield.distance, battlefield.coverType, battlefield.coverCheck" ?>)">One Attack</button>
             </div>
         </div>
         <?php
