@@ -304,7 +304,7 @@ const ITEMS             = [
             }
 
             .simpleBorder {
-                border : 2px solid black;
+                border : 1px solid black;
             }
         </style>
     </head>
@@ -316,9 +316,10 @@ const ITEMS             = [
                         <div class="col-xs-4 simpleBorder">
                             <?= characterDoll('Character One', 'charOne', 'charTwo') ?>
                         </div>
-                        <div class="col-xs-4 simpleBorder">Battle Field
+                        <div class="col-xs-4 simpleBorder">
                             <div class="row">
                                 <div class="col-xs-12">
+                                    <h3>Battle Field</h3>
                                     <label for="battlefield-cover-type">Cover Type</label>
                                     <select id="battlefield-cover-type" ng-model="battlefield.coverType">
                                         <option value="NONE">None</option>
@@ -335,12 +336,20 @@ const ITEMS             = [
                                     <input id="battlefield-distance" ng-model="battlefield.distance" type="number" min="0" max="10">
                                 </div>
                                 <div class="col-xs-12">
-                                    <h4>Statistics:</h4>
-                                    <div ng-repeat="activity in activityFeed">
-                                        In Range: <span ng-bind="activity.isInRange"> </span>
-                                        Hit: <span ng-bind="activity.isHit"> </span>
-                                        Glance: <span ng-bind="activity.isGlance"> </span>
-                                        Damage: <span ng-bind="activity.damageDone"> </span>
+                                    <div class="row">
+                                        <h4>Statistics: <button ng-click="methods.resetBattle()">Reset</button></h4>
+                                        <label class="col-xs-8" for="averageHit">Average Hit</label><span class="col-xs-4"><span id="averageHit" ng-bind="methods.averageDamage()"></span></span>
+                                        <label class="col-xs-8" for="hardestHit">Hardest Hit</label><span class="col-xs-4"><span id="hardestHit" ng-bind="battlefield.stats.biggestHit"></span></span>
+                                        <label class="col-xs-8" for="lightestHit">Lightest Hit</label><span class="col-xs-4"><span id="lightestHit" ng-bind="battlefield.stats.lightestHit"></span></span>
+                                        <label class="col-xs-8" for="glanceChance">Glance Chance</label><span class="col-xs-4"><span id="glanceChance" ng-bind="methods.percentGlance()"></span>%</span>
+                                    </div>
+                                    <div class="row" style="max-height: 300px; overflow-y: scroll; overflow-x: hidden;">
+                                        <div class="col-xs-12" ng-repeat="activity in activityFeed">
+                                            In Range: <span ng-bind="activity.isInRange"> </span>
+                                            Hit: <span ng-bind="activity.isHit"> </span>
+                                            Glance: <span ng-bind="activity.isGlance"> </span>
+                                            Damage: <span ng-bind="activity.damageDone"> </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -514,6 +523,15 @@ const ITEMS             = [
             $scope.battlefield.coverType = 'NONE';
             $scope.battlefield.coverCheck = 0;
             $scope.activityFeed = [];
+            $scope.battlefield.stats = {
+                totalDamage: 0,
+                countAttacks: 0,
+                countHits: 0,
+                countGlance: 0,
+                countOutOfRange: 0,
+                biggestHit: 0,
+                lightestHit: 0
+            };
 
             $scope.methods.attack = function (attacker, target, distance, coverType, coverCheck) {
                 let result = {
@@ -544,7 +562,7 @@ const ITEMS             = [
                         result.damageDone = $scope.methods.roll(attacker.weapon);
 
                         let glanceCheck = $scope.methods.randomNumber(0, 100);
-                        result.isGlance = (glanceCheck > target.armor.glancing_chance);
+                        result.isGlance = (glanceCheck < target.armor.glancing_chance);
 
                         if (result.isGlance) {
                             result.damageDone = Math.round(result.damageDone * 0.25);
@@ -554,7 +572,46 @@ const ITEMS             = [
 
 
                 console.log(result);
+                $scope.methods.updateBattlefieldStats(result);
                 $scope.activityFeed.push(result);
+            };
+
+            $scope.methods.attacks = function (attacker, target, distance, coverType, coverCheck) {
+                for (let i = 0; i < 1000; i++) {
+                    $scope.methods.attack(attacker, target, distance, coverType, coverCheck);
+                }
+            };
+
+            $scope.methods.updateBattlefieldStats = function (result) {
+                $scope.battlefield.stats = {
+                    totalDamage: $scope.battlefield.stats.totalDamage + result.damageDone,
+                    countAttacks: $scope.battlefield.stats.countAttacks++,
+                    countHits: result.isHit ? $scope.battlefield.stats.countHits + 1 : $scope.battlefield.stats.countHits,
+                    countGlance: result.isGlance ? $scope.battlefield.stats.countGlance + 1 : $scope.battlefield.stats.countGlance,
+                    countOutOfRange: !result.isInRange ? $scope.battlefield.stats.countOutOfRange + 1 : $scope.battlefield.stats.countOutOfRange,
+                    biggestHit: result.damageDone > $scope.battlefield.stats.biggestHit ? result.damageDone : $scope.battlefield.stats.biggestHit,
+                    lightestHit: result.damageDone < $scope.battlefield.stats.lightestHit || $scope.battlefield.stats.lightestHit == 0 ? result.damageDone : $scope.battlefield.stats.lightestHit
+                };
+            };
+
+            $scope.methods.resetBattle = function () {
+                $scope.battlefield.stats = {
+                    totalDamage: 0,
+                    countAttacks: 0,
+                    countHits: 0,
+                    countGlance: 0,
+                    countOutOfRange: 0,
+                    biggestHit: 0,
+                    lightestHit: 0
+                };
+            };
+
+            $scope.methods.averageDamage = function () {
+                return ($scope.battlefield.stats.totalDamage / $scope.battlefield.stats.countHits);
+            };
+
+            $scope.methods.percentGlance = function () {
+                return ($scope.battlefield.stats.countGlance / $scope.battlefield.stats.countHits) * 100;
             };
 
             //secondary stat calculation
@@ -746,6 +803,7 @@ const ITEMS             = [
         <div class="row">
             <div class="col-xs-12">
                 <button ng-click="methods.attack(<?= "$slug, $otherSlug, battlefield.distance, battlefield.coverType, battlefield.coverCheck" ?>)">One Attack</button>
+                <button ng-click="methods.attacks(<?= "$slug, $otherSlug, battlefield.distance, battlefield.coverType, battlefield.coverCheck" ?>)">Analyze Attack</button>
             </div>
         </div>
         <?php
