@@ -604,6 +604,8 @@ const ITEMS             = [
                     biggestHit: 0,
                     lightestHit: 0
                 };
+
+                $scope.activityFeed = [];
             };
 
             $scope.methods.averageDamage = function () {
