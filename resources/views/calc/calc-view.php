@@ -337,11 +337,15 @@ const ITEMS             = [
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="row">
-                                        <h4>Statistics: <button ng-click="methods.resetBattle()">Reset</button></h4>
+                                        <h4>Statistics:
+                                            <button ng-click="methods.resetBattle()">Reset</button>
+                                        </h4>
                                         <label class="col-xs-8" for="averageHit">Average Hit</label><span class="col-xs-4"><span id="averageHit" ng-bind="methods.averageDamage()"></span></span>
                                         <label class="col-xs-8" for="hardestHit">Hardest Hit</label><span class="col-xs-4"><span id="hardestHit" ng-bind="battlefield.stats.biggestHit"></span></span>
                                         <label class="col-xs-8" for="lightestHit">Lightest Hit</label><span class="col-xs-4"><span id="lightestHit" ng-bind="battlefield.stats.lightestHit"></span></span>
                                         <label class="col-xs-8" for="glanceChance">Glance Chance</label><span class="col-xs-4"><span id="glanceChance" ng-bind="methods.percentGlance()"></span>%</span>
+                                        <label class="col-xs-8" for="hitChance">Hit Chance</label><span class="col-xs-4"><span id="hitChance" ng-bind="methods.percentHit()"></span>%</span>
+                                        <label class="col-xs-8" for="breakCoverChance">Break Cover Chance</label><span class="col-xs-4"><span id="breakCoverChance" ng-bind="methods.percentBreakCover()"></span>%</span>
                                     </div>
                                     <div class="row" style="max-height: 300px; overflow-y: scroll; overflow-x: hidden;">
                                         <div class="col-xs-12" ng-repeat="activity in activityFeed">
@@ -529,8 +533,9 @@ const ITEMS             = [
                 countHits: 0,
                 countGlance: 0,
                 countOutOfRange: 0,
+                countBrokeCover: 0,
                 biggestHit: 0,
-                lightestHit: 0
+                lightestHit: 0,
             };
 
             $scope.methods.attack = function (attacker, target, distance, coverType, coverCheck) {
@@ -538,31 +543,173 @@ const ITEMS             = [
                     isInRange: false,
                     isHit: false,
                     isGlance: false,
-                    damageDone: 0
+                    brokeCover: false,
+                    damageDone: 0,
                 };
 
                 if (attacker.weapon.rangeMin <= distance && attacker.weapon.rangeMax >= distance) {
                     result.isInRange = true;
+                    let hitCheck = 0;
+                    let hitRoll = $scope.methods.randomNumber(1, 100);
+                    //did the attack hit?
                     if (attacker.weapon.type == 'Instant') {
-                        result.isHit = true
+                        console.log('is Instant attack: I just hit :^)');
                     } else if (attacker.weapon.type == 'Melee') {
-                        //todo analyze cover
-                        if (coverType == 'NONE') {
-                            result.isHit = true;
-                        } else if (coverType == 'PARTIAL') {
-
+                        console.log('is Melee');
+                        //todo analyze cover and pose
+                        if (coverType == 'PARTIAL') {
+                            let roll = $scope.methods.randomNumber(0, 50);
+                            let powerBonus = attacker.weapon.powerRating();
+                            let powerRoll = Math.min(100, roll + powerBonus);
+                            console.log('Trying to Break Cover: ' + powerRoll + '/' + coverCheck + ' roll: ' + roll + '+' + powerBonus);
+                            if (powerRoll > coverCheck) {
+                                result.brokeCover = true;
+                                switch (target.pose) {
+                                    case 'STAND':
+                                        hitCheck += 0;
+                                        break;
+                                    case 'CROUCH':
+                                        hitCheck += 30;
+                                        break;
+                                    case 'PRONE':
+                                        hitCheck += 40;
+                                        break;
+                                }
+                            }
+                            else {
+                                switch (target.pose) {
+                                    case 'STAND':
+                                        hitCheck += 50;
+                                        break;
+                                    case 'CROUCH':
+                                        hitCheck += 70;
+                                        break;
+                                    case 'PRONE':
+                                        hitCheck += 90;
+                                        break;
+                                }
+                            }
                         } else if (coverType == 'FULL') {
-
+                            let roll = $scope.methods.randomNumber(0, 50);
+                            let powerBonus = attacker.weapon.powerRating();
+                            let powerRoll = Math.min(100, roll + powerBonus);
+                            console.log('Trying to Break Cover: ' + powerRoll + '/' + coverCheck + ' roll: ' + roll + '+' + powerBonus);
+                            if (powerRoll > coverCheck) {
+                                result.brokeCover = true;
+                                switch (target.pose) {
+                                    case 'STAND':
+                                        hitCheck += 70;
+                                        break;
+                                    case 'CROUCH':
+                                        hitCheck += 80;
+                                        break;
+                                    case 'PRONE':
+                                        hitCheck += 90;
+                                        break;
+                                }
+                            }
+                            else {
+                                hitCheck += 100;
+                            }
                         }
                     } else if (attacker.weapon.type == 'Range') {
+                        console.log('is Ranged');
+                        switch (target.pose) {
+                            case 'STAND':
+                                if (distance <= 2) {
+                                    hitCheck += 90;
+                                }
+                                else if (distance > 5) {
+                                    hitCheck += 10;
+                                }
+                                break;
+                            case 'CROUCH':
+                                if (distance <= 2) {
+                                    hitCheck += 50;
+                                }
+                                else if (distance > 2 && distance <= 5) {
+                                    hitCheck += 40;
+                                }
+                                else if (distance > 5) {
+                                    hitCheck += 60
+                                }
+                                break;
+                            case 'PRONE':
+                                if (distance > 2 && distance <= 5) {
+                                    hitCheck += 60;
+                                }
+                                else if (distance > 5) {
+                                    hitCheck += 90
+                                }
+                                break;
+                        }
+                        //todo analyze cover and pose
+                        if (coverType == 'PARTIAL') {
+                            let roll = $scope.methods.randomNumber(0, 50);
+                            let powerBonus = attacker.weapon.powerRating();
+                            let powerRoll = Math.min(100, roll + powerBonus);
+                            console.log('Trying to Break Cover: ' + powerRoll + '/' + coverCheck + ' roll: ' + roll + '+' + powerBonus);
+                            if (powerRoll > coverCheck) {
+                                result.brokeCover = true;
+                                switch (target.pose) {
+                                    case 'STAND':
+                                        hitCheck += 0;
+                                        break;
+                                    case 'CROUCH':
+                                        hitCheck += 30;
+                                        break;
+                                    case 'PRONE':
+                                        hitCheck += 40;
+                                        break;
+                                }
+                            }
+                            else {
+                                switch (target.pose) {
+                                    case 'STAND':
+                                        hitCheck += 50;
+                                        break;
+                                    case 'CROUCH':
+                                        hitCheck += 70;
+                                        break;
+                                    case 'PRONE':
+                                        hitCheck += 90;
+                                        break;
+                                }
+                            }
+                        } else if (coverType == 'FULL') {
+                            let roll = $scope.methods.randomNumber(0, 50);
+                            let powerBonus = attacker.weapon.powerRating();
+                            let powerRoll = Math.min(100, roll + powerBonus);
+                            console.log('Trying to Break Cover: ' + powerRoll + '/' + coverCheck + ' roll: ' + roll + '+' + powerBonus);
+                            if (powerRoll > coverCheck) {
+                                result.brokeCover = true;
+                                switch (target.pose) {
+                                    case 'STAND':
+                                        hitCheck += 70;
+                                        break;
+                                    case 'CROUCH':
+                                        hitCheck += 80;
+                                        break;
+                                    case 'PRONE':
+                                        hitCheck += 90;
+                                        break;
+                                }
+                            }
+                            else {
+                                hitCheck += 100;
+                            }
+                        }
 
                     }
+
+                    console.log('is ' + attacker.weapon.type + ' attack: ' + hitRoll + '/' + hitCheck + ' target is: ' + target.pose + ' behind: ' + coverType);
+                    result.isHit = (hitRoll > hitCheck);
 
                     if (result.isHit) {
                         result.damageDone = $scope.methods.roll(attacker.weapon);
 
-                        let glanceCheck = $scope.methods.randomNumber(0, 100);
-                        result.isGlance = (glanceCheck < target.armor.glancing_chance);
+                        let glanceRoll = $scope.methods.randomNumber(0, 100);
+                        result.isGlance = (glanceRoll < target.armor.glancing_chance);
 
                         if (result.isGlance) {
                             result.damageDone = Math.round(result.damageDone * 0.25);
@@ -580,17 +727,19 @@ const ITEMS             = [
                 for (let i = 0; i < 1000; i++) {
                     $scope.methods.attack(attacker, target, distance, coverType, coverCheck);
                 }
+                console.log($scope.battlefield.stats);
             };
 
             $scope.methods.updateBattlefieldStats = function (result) {
                 $scope.battlefield.stats = {
                     totalDamage: $scope.battlefield.stats.totalDamage + result.damageDone,
-                    countAttacks: $scope.battlefield.stats.countAttacks++,
+                    countAttacks: $scope.battlefield.stats.countAttacks + 1,
                     countHits: result.isHit ? $scope.battlefield.stats.countHits + 1 : $scope.battlefield.stats.countHits,
                     countGlance: result.isGlance ? $scope.battlefield.stats.countGlance + 1 : $scope.battlefield.stats.countGlance,
                     countOutOfRange: !result.isInRange ? $scope.battlefield.stats.countOutOfRange + 1 : $scope.battlefield.stats.countOutOfRange,
+                    countBrokeCover: result.brokeCover ? $scope.battlefield.stats.countBrokeCover + 1 : $scope.battlefield.stats.countBrokeCover,
                     biggestHit: result.damageDone > $scope.battlefield.stats.biggestHit ? result.damageDone : $scope.battlefield.stats.biggestHit,
-                    lightestHit: result.damageDone < $scope.battlefield.stats.lightestHit || $scope.battlefield.stats.lightestHit == 0 ? result.damageDone : $scope.battlefield.stats.lightestHit
+                    lightestHit: (result.damageDone < $scope.battlefield.stats.lightestHit && result.damageDone != 0) || $scope.battlefield.stats.lightestHit == 0 ? result.damageDone : $scope.battlefield.stats.lightestHit
                 };
             };
 
@@ -601,6 +750,7 @@ const ITEMS             = [
                     countHits: 0,
                     countGlance: 0,
                     countOutOfRange: 0,
+                    countBrokeCover: 0,
                     biggestHit: 0,
                     lightestHit: 0
                 };
@@ -614,6 +764,14 @@ const ITEMS             = [
 
             $scope.methods.percentGlance = function () {
                 return ($scope.battlefield.stats.countGlance / $scope.battlefield.stats.countHits) * 100;
+            };
+
+            $scope.methods.percentHit = function () {
+                return ($scope.battlefield.stats.countHits / $scope.battlefield.stats.countAttacks) * 100;
+            };
+
+            $scope.methods.percentBreakCover = function () {
+                return ($scope.battlefield.stats.countBrokeCover / $scope.battlefield.stats.countAttacks) * 100;
             };
 
             //secondary stat calculation
@@ -968,6 +1126,7 @@ const ITEMS             = [
             calcMin : function () { return $scope.methods.damageMin(<?= "$minDmg, $dmgStat, $dmgMod" ?>); },
             calcMax : function () { return $scope.methods.damageMax(<?= "$maxDmg, $dmgStat, $dmgMod" ?>); },
             calcAverage : function () { return $scope.methods.damageAverage(<?= "$calcMinDmg(), $calcMaxDmg(), $dmgTalent" ?>); },
+            powerRating: function () { return <?= "$dmgMod * $dmgStat" ?> },
             dmgMod : <?= $item['dmg_mod'] ?>,
             dmgStatName : '<?= statNameToLabel($item['dmg_stat']) ?>',
             dmgTalentName : '<?= statNameToLabel($item['dmg_talent']) ?>',
