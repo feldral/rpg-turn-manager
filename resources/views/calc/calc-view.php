@@ -799,6 +799,9 @@ const ITEMS             = [
             $scope.mental_resistance = function (char) {
                 return char.comprehension + char.intuition;
             };
+            $scope.methods.totalStatPoints = function (char) {
+                return char.dominance + char.dexterity + char.comprehension + char.creativity + char.influence + char.intuition + char.fortitude + char.focus;
+            };
 
             // armor
             $scope.armors = [
@@ -825,38 +828,38 @@ const ITEMS             = [
             // preformed classes
             $scope.classes = [];
             $scope.classes.makeTank = function (char) {
-                char.dexterity = 10;
-                char.dominance = 20;
-                char.creativity = 5;
-                char.comprehension = 5;
-                char.intuition = 5;
-                char.influence = 5;
-                char.focus = 5;
-                char.fortitude = 10;
+                char.dexterity = 60;
+                char.dominance = 70;
+                char.creativity = 35;
+                char.comprehension = 35;
+                char.intuition = 35;
+                char.influence = 35;
+                char.focus = 50;
+                char.fortitude = 80;
 
                 //todo talents
             };
             $scope.classes.makeMage = function (char) {
-                char.dexterity = 5;
-                char.dominance = 5;
-                char.creativity = 10;
-                char.comprehension = 20;
-                char.intuition = 5;
-                char.influence = 5;
-                char.focus = 10;
-                char.fortitude = 5;
+                char.dexterity = 35;
+                char.dominance = 35;
+                char.creativity = 70;
+                char.comprehension = 80;
+                char.intuition = 35;
+                char.influence = 35;
+                char.focus = 60;
+                char.fortitude = 50;
 
                 //todo talents
             };
-            $scope.classes.makeRouge = function (char) {
-                char.dexterity = 20;
-                char.dominance = 10;
-                char.creativity = 5;
-                char.comprehension = 5;
-                char.intuition = 10;
-                char.influence = 5;
-                char.focus = 5;
-                char.fortitude = 5;
+            $scope.classes.makeBard = function (char) {
+                char.dexterity = 35;
+                char.dominance = 35;
+                char.creativity = 50;
+                char.comprehension = 35;
+                char.intuition = 80;
+                char.influence = 70;
+                char.focus = 60;
+                char.fortitude = 35;
 
                 //todo talents
             };
@@ -989,7 +992,7 @@ const ITEMS             = [
                 <div class="row classes">
                     <span class="col-xs-4 col-md-3" ng-click="classes.makeTank(<?= $slug ?>)">Tank</span>
                     <span class="col-xs-4 col-md-3" ng-click="classes.makeMage(<?= $slug ?>)">Mage</span>
-                    <span class="col-xs-4 col-md-3" ng-click="classes.makeRouge(<?= $slug ?>)">Rouge</span>
+                    <span class="col-xs-4 col-md-3" ng-click="classes.makeBard(<?= $slug ?>)">Bard</span>
                 </div>
             </div>
             <div class="col-xs-12 col-md-6">
@@ -1001,6 +1004,8 @@ const ITEMS             = [
                     <?php
                 }
                 ?>
+                <label class="col-xs-8" for="<?= "$slug.statTotal" ?>">Total Stat Points</label>
+                <span class="col-xs-4" id="<?= "$slug.statTotal" ?>" ng-bind="<?= "methods.totalStatPoints($slug)" ?>"></span>
             </div>
             <div class="col-xs-12 col-md-6">
                 <?php
@@ -1050,7 +1055,7 @@ const ITEMS             = [
         <?php
         foreach (TIER_1_STAT_NAMES as $statName) {
             ?>
-            $scope.<?= $slug . '.' . $statName ?> = 5;
+            $scope.<?= $slug . '.' . $statName ?> = 50;
             <?php
         }
         foreach (TALENT_NAMES as $talentName) {
