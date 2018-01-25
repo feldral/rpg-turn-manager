@@ -1,23 +1,23 @@
 <?php
 const TIER_1_STAT_NAMES = [
-    'dexterity',
-    'dominance',
-    'creativity',
-    'comprehension',
-    'intuition',
-    'influence',
-    'focus',
-    'fortitude',
+    'dexterity'     => 'How well one is able to control their movements (Do you have motor skills to pick the lock for the door?)',
+    'dominance'     => 'How much power one is able to put behind their movements (Do you have enough Strength to break the lock, the door?)',
+    'creativity'    => 'How well one is able to apply what they know (Do you know how to disable the lock on the door, the trap, the hinges?)',
+    'comprehension' => 'How much one is able to understand the intricacies of how the world works (Do you know how locks work, what about doors?)',
+    'intuition'     => 'How well one is able to pick up on what is happening around them (Will notice the guard before you finish dealing with this locked door, what about the trap?)',
+    'influence'     => 'How much one is able to impact or change what others perceive about you (Could you get someone to open the locked door for you, or tell you about the trap?)',
+    'focus'         => 'How well one is able to maintain mental clarity (Can you handle the pressure as you try to deal with this locked door?)',
+    'fortitude'     => 'How well one is able to endure physical strain (If you fail to deal with the locked door, how likely are you able to survive the guard/trap to try again later?)',
 ];
 const TIER_2_STAT_NAMES = [
-    'speed',
-    'health',
-    'will',
-    'energy',
-    'energy_regen',
-    'initiative',
-    'physical_resistance',
-    'mental_resistance',
+    'speed'               => 'Rating of how quickly one can move.',
+    'health'              => 'How much Damage one can take before death',
+    'will'                => 'How much Mental strain (Will Damage) one can take before they can be easily influenced by another',
+    'energy'              => 'The max amount of Energy one can store to be used in a turn',
+    'energy_regen'        => 'The rate of Energy Gain at the beginning of a turn',
+    'initiative'          => 'Rating of how quickly one can react. Influences turn order.',
+    'physical_resistance' => '(unused right now, will probably work with Armor used, maybe increase Glancing hit chance) How well one can resist taking Health Damage',
+    'mental_resistance'   => '(Unused right now, Maybe it will be flat reduction, maybe it will cause Glancing hits) How well one can resist taking Will Damage',
 ];
 const TALENT_NAMES      = [
     'one_hand',
@@ -306,6 +306,21 @@ const ITEMS             = [
             .simpleBorder {
                 border : 1px solid black;
             }
+
+            .clickAble {
+                cursor           : pointer;
+                background-color : slategrey;
+                border-radius    : 3px;
+                color            : white;
+            }
+
+            label > .clickAble {
+                padding          : 0 3px 0 2px;
+            }
+
+            .clickAble:hover {
+                outline : 1px solid slateblue;
+            }
         </style>
     </head>
     <body ng-app="statCalc" ng-controller="myCtrl">
@@ -328,7 +343,10 @@ const ITEMS             = [
                                     </select>
                                 </div>
                                 <div class="col-xs-12">
-                                    <label for="battlefield-cover-check">Cover Strength</label>
+                                    <label for="battlefield-cover-check">
+                                        <span class="clickAble" onclick="alert('How much power is needed to break through the cover (mind you it may still be there after broken and debris may be in the way)')">?</span>
+                                        Cover Strength
+                                    </label>
                                     <input id="battlefield-cover-check" ng-model="battlefield.coverCheck" type="number" min="1" max="100">
                                 </div>
                                 <div class="col-xs-12">
@@ -852,9 +870,9 @@ const ITEMS             = [
                 //todo talents
             };
             $scope.classes.makeBard = function (char) {
-                char.dexterity = 35;
+                char.dexterity = 50;
                 char.dominance = 35;
-                char.creativity = 50;
+                char.creativity = 35;
                 char.comprehension = 35;
                 char.intuition = 80;
                 char.influence = 70;
@@ -892,6 +910,7 @@ const ITEMS             = [
      *
      * @param $name
      * @param $slug
+     * @param $otherSlug
      *
      * @return string
      */
@@ -918,7 +937,10 @@ const ITEMS             = [
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <label for="doll-<?= $slug ?>-pose">Stance</label>
+                <label for="doll-<?= $slug ?>-pose">
+                    <span class="clickAble" onclick="alert('This influences how likely you are to be hit')">?</span>
+                    Stance
+                </label>
                 <select id="doll-<?= $slug ?>-pose" ng-model="<?= "$slug.pose" ?>">
                     <option value="STAND">Standing</option>
                     <option value="CROUCH">Crouching</option>
@@ -930,12 +952,18 @@ const ITEMS             = [
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <label for="doll-<?= $slug ?>-armor">Armor</label>
+                        <label for="doll-<?= $slug ?>-armor">
+                            <span class="clickAble" onclick="alert('Dictates base chance for Attacks made against you to glance (and eventually damage reduction)')">?</span>
+                            Armor
+                        </label>
                         <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
                         </select>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <label for="doll-<?= $slug ?>-weapon">Weapon</label>
+                        <label for="doll-<?= $slug ?>-weapon">
+                            <span class="clickAble" onclick="alert('Dictates your Attack\'s: Type, Energy Cost, Effective Range, and Critical Hit Chance. As well as the resulting Damage\'s Type, Area of Effect and Critical Effect.')">?</span>
+                            Weapon
+                        </label>
                         <select id="doll-<?= $slug ?>-weapon" ng-model="<?= "$slug.weapon" ?>" ng-options="weapon as weapon.name for weapon in <?= "$slug.character_items" ?>">
                         </select>
                     </div>
@@ -943,14 +971,14 @@ const ITEMS             = [
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <div class="row">
-                            <label class="col-xs-8">Glancing Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.glancing_chance" ?>"></span></span>
-                            <label class="col-xs-8">Energy Cost</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost" ?>"></span></span>
+                            <label class="col-xs-8">Glancing Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.glancing_chance" ?>"></span>%</span>
+                            <label class="col-xs-8">Energy Cost from Armor</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost" ?>"></span></span>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <div class="row">
                             <label class="col-xs-8">Avoid Glancing Blow</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcHitBonus()" ?>"></span></span>
-                            <label class="col-xs-8">Min/Avg/Max Damage:</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
+                            <label class="col-xs-8">Min/Likely/Max Damage:</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
                             <label class="col-xs-8">Critical Hit Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcCritBonus()" ?>"></span>%</span>
                         </div>
                     </div>
@@ -990,32 +1018,42 @@ const ITEMS             = [
             </div>
             <div class="col-xs-12">
                 <div class="row classes">
-                    <span class="col-xs-4 col-md-3" ng-click="classes.makeTank(<?= $slug ?>)">Tank</span>
-                    <span class="col-xs-4 col-md-3" ng-click="classes.makeMage(<?= $slug ?>)">Mage</span>
-                    <span class="col-xs-4 col-md-3" ng-click="classes.makeBard(<?= $slug ?>)">Bard</span>
+                    <span class="col-xs-4 col-md-3 clickAble" ng-click="classes.makeTank(<?= $slug ?>)">Tank Archetype</span>
+                    <span class="col-xs-4 col-md-3 clickAble" ng-click="classes.makeMage(<?= $slug ?>)">Mage Archetype</span>
+                    <span class="col-xs-4 col-md-3 clickAble" ng-click="classes.makeBard(<?= $slug ?>)">Bard Archetype</span>
                 </div>
             </div>
             <div class="col-xs-12 col-md-6">
-                <?php
-                foreach (TIER_1_STAT_NAMES as $statName) {
-                    ?>
-                    <label class="col-xs-8" for="<?= "$slug.$statName" ?>"><?= statNameToLabel($statName) ?></label>
-                    <input class="col-xs-4" id="<?= "$slug.$statName" ?>" type="number" max="100" min="1" ng-model="<?= "$slug.$statName" ?>" />
+                <div class="row">
                     <?php
-                }
-                ?>
-                <label class="col-xs-8" for="<?= "$slug.statTotal" ?>">Total Stat Points</label>
-                <span class="col-xs-4" id="<?= "$slug.statTotal" ?>" ng-bind="<?= "methods.totalStatPoints($slug)" ?>"></span>
+                    foreach (TIER_1_STAT_NAMES as $statName => $statDescription) {
+                        ?>
+                        <label class="col-xs-8" for="<?= "$slug.$statName" ?>">
+                            <span class="clickAble" onclick="alert('<?= $statDescription ?>')">?</span>
+                            <?= statNameToLabel($statName) ?>
+                        </label>
+                        <input class="col-xs-4" id="<?= "$slug.$statName" ?>" type="number" max="100" min="1" ng-model="<?= "$slug.$statName" ?>" />
+                        <?php
+                    }
+                    ?>
+                    <label class="col-xs-8" for="<?= "$slug.statTotal" ?>">Total Stat Points</label>
+                    <span class="col-xs-4" id="<?= "$slug.statTotal" ?>" ng-bind="<?= "methods.totalStatPoints($slug)" ?>"></span>
+                </div>
             </div>
             <div class="col-xs-12 col-md-6">
-                <?php
-                foreach (TIER_2_STAT_NAMES as $statName) {
-                    ?>
-                    <label class="col-xs-8" for="<?= "$slug.$statName" ?>"><?= statNameToLabel($statName) ?></label>
-                    <span class="col-xs-4" id="<?= $slug . $statName ?>" ng-bind="<?= "$statName($slug)" ?>"></span>
+                <div class="row">
                     <?php
-                }
-                ?>
+                    foreach (TIER_2_STAT_NAMES as $statName => $statDescription) {
+                        ?>
+                        <label class="col-xs-8" for="<?= "$slug.$statName" ?>">
+                            <span class="clickAble" onclick="alert('<?= $statDescription ?>')">?</span>
+                            <?= statNameToLabel($statName) ?>
+                        </label>
+                        <span class="col-xs-4" id="<?= $slug . $statName ?>" ng-bind="<?= "$statName($slug)" ?>"></span>
+                        <?php
+                    }
+                    ?>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -1053,7 +1091,7 @@ const ITEMS             = [
         $scope.<?= "$slug.pose" ?> = 'STAND';
 
         <?php
-        foreach (TIER_1_STAT_NAMES as $statName) {
+        foreach (TIER_1_STAT_NAMES as $statName => $statDescription) {
             ?>
             $scope.<?= $slug . '.' . $statName ?> = 50;
             <?php
