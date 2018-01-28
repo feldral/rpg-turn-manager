@@ -315,7 +315,7 @@ const ITEMS             = [
             }
 
             label > .clickAble {
-                padding          : 0 3px 0 2px;
+                padding : 0 3px 0 2px;
             }
 
             .clickAble:hover {
@@ -821,6 +821,47 @@ const ITEMS             = [
                 return char.dominance + char.dexterity + char.comprehension + char.creativity + char.influence + char.intuition + char.fortitude + char.focus;
             };
 
+            $scope.methods.generateCode = function (char) {
+                let char_stats = {};
+
+                <?php
+                foreach (TIER_1_STAT_NAMES as $statName => $description) {
+                ?>
+                char_stats.<?= $statName ?> = char.<?= $statName ?>;
+                <?php
+                }
+                ?>
+
+                <?php
+                foreach (TALENT_NAMES as $talentName) {
+                ?>
+                char_stats.<?= $talentName ?> = char.<?= $talentName ?>;
+                <?php
+                }
+                ?>
+
+                char.code = JSON.stringify(char_stats);
+            };
+            $scope.methods.loadCode = function (char) {
+                let char_stats = JSON.parse(char.code);
+
+                <?php
+                foreach (TIER_1_STAT_NAMES as $statName => $description) {
+                ?>
+                char.<?= $statName ?> = char_stats.<?= $statName ?>;
+                <?php
+                }
+                ?>
+
+                <?php
+                foreach (TALENT_NAMES as $talentName) {
+                ?>
+                char.<?= $talentName ?> = char_stats.<?= $talentName ?>;
+                <?php
+                }
+                ?>
+            };
+
             // armor
             $scope.armors = [
                 <?php
@@ -1059,15 +1100,23 @@ const ITEMS             = [
         <div class="row">
             <div class="col-xs-12">Talents</div>
             <div class="col-xs-12">
-                <?php
-                foreach (TALENT_NAMES as $talentName) {
-                    ?>
-                    <label class="col-xs-8 col-md-4" for="<?= $slug . $talentName ?>"><?= statNameToLabel($talentName) ?></label>
-                    <input class="col-xs-4 col-md-2" id="<?= $slug . $talentName ?>" type="number" max="100" min="0" ng-model="<?= "$slug.$talentName" ?>" />
+                <div class="row">
                     <?php
-                }
-                ?>
+                    foreach (TALENT_NAMES as $talentName) {
+                        ?>
+                        <label class="col-xs-8 col-md-4" for="<?= $slug . $talentName ?>"><?= statNameToLabel($talentName) ?></label>
+                        <input class="col-xs-4 col-md-2" id="<?= $slug . $talentName ?>" type="number" max="100" min="0" ng-model="<?= "$slug.$talentName" ?>" />
+                        <?php
+                    }
+                    ?>
+                </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12  col-md-3 clickAble" ng-click="methods.generateCode(<?= $slug ?>)">Generate</div>
+            <label class="col-xs-4 col-md-2" for="<?= "$slug.save" ?>">code:</label>
+            <input class="col-xs-8 col-md-4" id="<?= "$slug.save" ?>" type="text" ng-model="<?= "$slug.code" ?>" />
+            <div class="col-xs-12  col-md-3 clickAble" ng-click="methods.loadCode(<?= $slug ?>)">Load</div>
         </div>
         <?php
         return '';
@@ -1089,6 +1138,7 @@ const ITEMS             = [
         $scope.<?= "$slug.currentEnergy" ?> = 0;
         $scope.<?= "$slug.currentWill" ?> = 0;
         $scope.<?= "$slug.pose" ?> = 'STAND';
+        $scope.<?= "$slug.code" ?> = '';
 
         <?php
         foreach (TIER_1_STAT_NAMES as $statName => $statDescription) {
