@@ -332,7 +332,7 @@ function characterDoll($name, $slug, $otherSlug)
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <label for="doll-<?= $slug ?>-armor">
-                        <span class="clickAble" onclick="alert('Dictates base chance for Attacks made against you to glance (and eventually damage reduction)')">?</span>
+                        <span class="clickAble" onclick="alert('Dictates base chance for Attacks made against you to glance (glancing attacks result in a 75% damage reduction)')">?</span>
                         Armor
                     </label>
                     <select id="doll-<?= $slug ?>-armor" ng-model="<?= "$slug.armor" ?>" ng-options="armor as armor.name for armor in armors">
