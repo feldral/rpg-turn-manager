@@ -95,13 +95,22 @@ include_once 'calc_php_functions.php';
                                         <h4>Statistics:
                                             <button ng-click="methods.resetBattle()">Reset</button>
                                         </h4>
-                                        <label class="col-xs-8" for="averageHit">Average Hit</label><span class="col-xs-4"><span id="averageHit" ng-bind="methods.averageDamage()"></span></span>
-                                        <label class="col-xs-8" for="hardestHit">Hardest Hit</label><span class="col-xs-4"><span id="hardestHit" ng-bind="battlefield.stats.biggestHit"></span></span>
-                                        <label class="col-xs-8" for="lightestHit">Lightest Hit</label><span class="col-xs-4"><span id="lightestHit" ng-bind="battlefield.stats.lightestHit"></span></span>
-                                        <label class="col-xs-8" for="glanceChance">Glance Chance</label><span class="col-xs-4"><span id="glanceChance" ng-bind="methods.percentGlance()"></span>%</span>
-                                        <label class="col-xs-8" for="hitChance">Hit Chance</label><span class="col-xs-4"><span id="hitChance" ng-bind="methods.percentHit()"></span>%</span>
-                                        <label class="col-xs-8" for="critChance">Crit Chance</label><span class="col-xs-4"><span id="critChance" ng-bind="methods.percentCrit()"></span>%</span>
-                                        <label class="col-xs-8" for="breakCoverChance">Break Cover Chance</label><span class="col-xs-4"><span id="breakCoverChance" ng-bind="methods.percentBreakCover()"></span>%</span>
+                                        <label class="col-xs-8" for="averageHit">
+                                            <span class="clickAble" onclick="alert('Average Damage done in one attack, not what damage is most likely to be done.')">?</span>
+                                            Average Hit</label>
+                                        <span class="col-xs-4"><span id="averageHit" ng-bind="methods.averageDamage()"></span></span>
+                                        <label class="col-xs-8" for="hardestHit">Hardest Hit</label>
+                                        <span class="col-xs-4"><span id="hardestHit" ng-bind="battlefield.stats.biggestHit"></span></span>
+                                        <label class="col-xs-8" for="lightestHit">Lightest Hit</label>
+                                        <span class="col-xs-4"><span id="lightestHit" ng-bind="battlefield.stats.lightestHit"></span></span>
+                                        <label class="col-xs-8" for="glanceChance">Glance Chance</label>
+                                        <span class="col-xs-4"><span id="glanceChance" ng-bind="methods.percentGlance()"></span>%</span>
+                                        <label class="col-xs-8" for="hitChance">Hit Chance</label>
+                                        <span class="col-xs-4"><span id="hitChance" ng-bind="methods.percentHit()"></span>%</span>
+                                        <label class="col-xs-8" for="critChance">Crit Chance</label>
+                                        <span class="col-xs-4"><span id="critChance" ng-bind="methods.percentCrit()"></span>%</span>
+                                        <label class="col-xs-8" for="breakCoverChance">Break Cover Chance</label>
+                                        <span class="col-xs-4"><span id="breakCoverChance" ng-bind="methods.percentBreakCover()"></span>%</span>
                                     </div>
                                     <div class="row" style="max-height: 300px; overflow-y: scroll; overflow-x: hidden;">
                                         <div class="col-xs-12" ng-repeat="activity in activityFeed">

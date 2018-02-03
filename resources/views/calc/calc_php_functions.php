@@ -350,15 +350,35 @@ function characterDoll($name, $slug, $otherSlug)
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <div class="row">
-                        <label class="col-xs-8">Glancing Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.glancing_chance" ?>"></span>%</span>
-                        <label class="col-xs-8">Energy Cost from Armor</label><span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost" ?>"></span></span>
+                        <label class="col-xs-8">
+                            <span class="clickAble" onclick="alert('A Glancing hit reduces damage by 75% and is influenced by the defender\'s armor and stats vs. the attacker\'s weapon and skill.')">?</span>
+                            Glancing Chance
+                        </label>
+                        <span class="col-xs-4"><span ng-bind="<?= "$slug.armor.glancing_chance" ?>"></span>%</span>
+                        <label class="col-xs-8">
+                            <span class="clickAble" onclick="alert('Energy Cost that is added to every action.')">?</span>
+                            Energy Cost from Armor
+                        </label>
+                        <span class="col-xs-4"><span ng-bind="<?= "$slug.armor.energy_cost" ?>"></span></span>
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <div class="row">
-                        <label class="col-xs-8">Avoid Glancing Blow</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcHitBonus()" ?>"></span></span>
-                        <label class="col-xs-8">Min/Likely/Max Damage:</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
-                        <label class="col-xs-8">Critical Hit Chance</label><span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcCritBonus()" ?>"></span>%</span>
+                        <label class="col-xs-8">
+                            <span class="clickAble" onclick="alert('A Glancing hit reduces damage by 75% and is influenced by the defender\'s armor and stats vs. the attacker\'s weapon and talent.')">?</span>
+                            Avoid Glancing Blow
+                        </label>
+                        <span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcHitBonus()" ?>"></span></span>
+                        <label class="col-xs-8">
+                            <span class="clickAble" onclick="alert('The Minimum amount of damage ; The Most Likely amount of damage based on weapon Talent ; The Maximum amount of damage | that can be done by an attack. (before Glancing Reduction)')">?</span>
+                            Min / Likely / Max:
+                        </label>
+                        <span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcMin()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcAverage()" ?>"></span>/<span ng-bind="<?= "$slug.weapon.calcMax()" ?>"></span></span>
+                        <label class="col-xs-8">
+                            <span class="clickAble" onclick="alert('A Critical Hit applies an effect on the defender, including but not limited to Straight Damage and debuffs.')">?</span>
+                            Critical Hit Chance
+                        </label>
+                        <span class="col-xs-4"><span ng-bind="<?= "$slug.weapon.calcCritBonus()" ?>"></span>%</span>
                     </div>
                 </div>
             </div>
