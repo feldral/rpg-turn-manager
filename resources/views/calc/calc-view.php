@@ -8,7 +8,7 @@ include_once 'calc_php_functions.php';
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Stat Calculator V2.2</title>
+        <title>Stat Calculator V2.3</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -100,12 +100,14 @@ include_once 'calc_php_functions.php';
                                         <label class="col-xs-8" for="lightestHit">Lightest Hit</label><span class="col-xs-4"><span id="lightestHit" ng-bind="battlefield.stats.lightestHit"></span></span>
                                         <label class="col-xs-8" for="glanceChance">Glance Chance</label><span class="col-xs-4"><span id="glanceChance" ng-bind="methods.percentGlance()"></span>%</span>
                                         <label class="col-xs-8" for="hitChance">Hit Chance</label><span class="col-xs-4"><span id="hitChance" ng-bind="methods.percentHit()"></span>%</span>
+                                        <label class="col-xs-8" for="critChance">Crit Chance</label><span class="col-xs-4"><span id="critChance" ng-bind="methods.percentCrit()"></span>%</span>
                                         <label class="col-xs-8" for="breakCoverChance">Break Cover Chance</label><span class="col-xs-4"><span id="breakCoverChance" ng-bind="methods.percentBreakCover()"></span>%</span>
                                     </div>
                                     <div class="row" style="max-height: 300px; overflow-y: scroll; overflow-x: hidden;">
                                         <div class="col-xs-12" ng-repeat="activity in activityFeed">
                                             In Range: <span ng-bind="activity.isInRange"> </span>
                                             Hit: <span ng-bind="activity.isHit"> </span>
+                                            Crit: <span ng-bind="activity.isCrit"> </span>
                                             Glance: <span ng-bind="activity.isGlance"> </span>
                                             Damage: <span ng-bind="activity.damageDone"> </span>
                                         </div>
@@ -286,6 +288,7 @@ include_once 'calc_php_functions.php';
                 totalDamage: 0,
                 countAttacks: 0,
                 countHits: 0,
+                countCrits: 0,
                 countGlance: 0,
                 countOutOfRange: 0,
                 countBrokeCover: 0,
@@ -297,6 +300,7 @@ include_once 'calc_php_functions.php';
                 let result = {
                     isInRange: false,
                     isHit: false,
+                    isCrit: false,
                     isGlance: false,
                     brokeCover: false,
                     damageDone: 0,
@@ -461,6 +465,9 @@ include_once 'calc_php_functions.php';
                     result.isHit = (hitRoll > hitCheck);
 
                     if (result.isHit) {
+                        let critRoll = $scope.methods.randomNumber(1,100);
+                        result.isCrit = ((100 - attacker.weapon.calcCritBonus()) < critRoll);
+
                         result.damageDone = $scope.methods.roll(attacker.weapon);
 
                         let glanceRoll = $scope.methods.randomNumber(0, 100);
@@ -493,6 +500,7 @@ include_once 'calc_php_functions.php';
                     totalDamage: $scope.battlefield.stats.totalDamage + result.damageDone,
                     countAttacks: $scope.battlefield.stats.countAttacks + 1,
                     countHits: result.isHit ? $scope.battlefield.stats.countHits + 1 : $scope.battlefield.stats.countHits,
+                    countCrits: result.isCrit ? $scope.battlefield.stats.countCrits + 1 : $scope.battlefield.stats.countCrits,
                     countGlance: result.isGlance ? $scope.battlefield.stats.countGlance + 1 : $scope.battlefield.stats.countGlance,
                     countOutOfRange: !result.isInRange ? $scope.battlefield.stats.countOutOfRange + 1 : $scope.battlefield.stats.countOutOfRange,
                     countBrokeCover: result.brokeCover ? $scope.battlefield.stats.countBrokeCover + 1 : $scope.battlefield.stats.countBrokeCover,
@@ -506,6 +514,7 @@ include_once 'calc_php_functions.php';
                     totalDamage: 0,
                     countAttacks: 0,
                     countHits: 0,
+                    countCrits: 0,
                     countGlance: 0,
                     countOutOfRange: 0,
                     countBrokeCover: 0,
@@ -526,6 +535,10 @@ include_once 'calc_php_functions.php';
 
             $scope.methods.percentHit = function () {
                 return ($scope.battlefield.stats.countHits / $scope.battlefield.stats.countAttacks) * 100;
+            };
+
+            $scope.methods.percentCrit = function () {
+                return ($scope.battlefield.stats.countCrits / $scope.battlefield.stats.countAttacks) * 100;
             };
 
             $scope.methods.percentBreakCover = function () {
